@@ -1,3 +1,5 @@
+package ml_ex1;
+
 class Node {
 	Node left;
 	Node right;
