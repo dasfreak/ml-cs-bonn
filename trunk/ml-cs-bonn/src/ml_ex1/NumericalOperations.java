@@ -1,5 +1,6 @@
 package ml_ex1;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -30,6 +31,25 @@ public class NumericalOperations {
 
 		return process_data;
 
+	}
+	
+	public static List<Double> findSplitLocations(List<List<Attribute>> process_data, int column){
+		List<Double> thresholds;
+		thresholds = new ArrayList<Double>();
+		
+		sort(process_data, column);
+		
+		String lastseen = "";
+		
+		for(int i = 0; i < process_data.size(); i++){
+			if(process_data.get(i).get(process_data.get(0).size()-1).getData() != lastseen){
+				if(!thresholds.contains((Double) process_data.get(i).get(column).getData())){
+				thresholds.add((Double) process_data.get(i).get(column).getData());
+				}
+			}
+		}
+		
+		return thresholds;
 	}
 
 }
