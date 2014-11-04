@@ -3,9 +3,9 @@ package ml_ex1;
 public class Tree {
 	public Node root;
 	public double entropy; //used in other nodes for calculation
-	public static double yes_number;
-	public static double no_number;
-	public static double all_records;
+	public double yes_number;
+	public double no_number;
+	public double all_records;
 	
 	public void setRoot(Node root){
 		this.root=root; //setting root node
