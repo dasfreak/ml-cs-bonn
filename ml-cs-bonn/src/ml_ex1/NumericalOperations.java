@@ -12,7 +12,6 @@ public class NumericalOperations {
 		
 		// check for object type
 		if (process_data.get(0).get(column) instanceof Numerical) {
-			//System.out.println("OK");
 		} else {
 			System.err.println("Error: Column is not numerical, exiting program");
 			System.exit(0);
@@ -37,14 +36,16 @@ public class NumericalOperations {
 		List<Double> thresholds;
 		thresholds = new ArrayList<Double>();
 		
+		// sort list by column
 		sort(process_data, column);
 		
+		// for every entry in table, check 
 		for(int i = 0; i < process_data.size()-1; i++){
 			
 			// if two following instances differ in target
 			if((boolean)process_data.get(i).get(process_data.get(0).size()-1).getData() != (boolean)process_data.get(i+1).get(process_data.get(0).size()-1).getData()){
 				
-					// save mean
+					// then save mean
 					double mean = ((Double) process_data.get(i).get(column).getData()+(Double) process_data.get(i+1).get(column).getData())/2;
 					thresholds.add(mean);
 				

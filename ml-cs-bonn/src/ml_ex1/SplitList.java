@@ -19,10 +19,10 @@ public class SplitList {
 		rightSubset = new ArrayList<List<Attribute>>();
 
 		// check for datatype and create left and right Subset (delete used Attribute)
-		if (dataset.get(0).get(column) instanceof Numerical) {
+		if (dataset.get(0).get(column) instanceof Numerical) { // case: numerical
 
 			for (int i=0; i<dataset.size(); i++){
-				if((double) dataset.get(i).get(column).getData() >= threshold){	
+				if((double) dataset.get(i).get(column).getData() >= threshold){	// split with given threshold
 						if(deletAttribute) dataset.get(i).remove(column);
 					rightSubset.add(dataset.get(i));
 				}else{
@@ -31,9 +31,9 @@ public class SplitList {
 				}
 			}
 		}
-		else if (dataset.get(0).get(column) instanceof Categorical) {
+		else if (dataset.get(0).get(column) instanceof Categorical) { // case: categorial
 			for (int i=0; i<dataset.size(); i++){
-				if(S.contains((String) dataset.get(i).get(column).getData())){	
+				if(S.contains((String) dataset.get(i).get(column).getData())){ // split depending on given attributes
 					if(deletAttribute) dataset.get(i).remove(column);
 					rightSubset.add(dataset.get(i));
 				}else{
@@ -42,9 +42,9 @@ public class SplitList {
 				}
 			}
 		}
-		else if (dataset.get(0).get(column) instanceof Binary) {
+		else if (dataset.get(0).get(column) instanceof Binary) { // case binary
 			for (int i=0; i<dataset.size(); i++){
-				if((boolean) dataset.get(i).get(column).getData() == true){	
+				if((boolean) dataset.get(i).get(column).getData() == true){	 // split into true and false
 					if(deletAttribute) dataset.get(i).remove(column);
 					rightSubset.add(dataset.get(i));
 				}else{
@@ -54,7 +54,7 @@ public class SplitList {
 			}
 
 		}
-		else{
+		else{ // if unknown exit with error
 			System.err.println("Unknown Attribute, exiting program");
 			System.exit(0);
 		}				
