@@ -35,15 +35,15 @@ public class Train {
 		// c++ has default parameters, java does not :'(
 		//Subsets = SplitList.split(process_data, 0, -1, null);
 		
-		// split at column 1 (numerical) with threshold 48
+		// split at column 0 (numerical) with threshold 48
 		// Subsets = SplitList.split(process_data, 0, 48, null);
 		
-		// split at column 2 (categorial) with set S
+		// split at column 1 (categorial) with set S
 		List<String> S =  new ArrayList<String>();
 		S.add("bb");
 		S.add("bc");
 		
-		Subsets = SplitList.split(process_data, 1, 48, S);
+		Subsets = SplitList.split(process_data, 1, -1, S);
 		
 		FileReader.printReadDataArrayList(Subsets.get(0));
 	}
