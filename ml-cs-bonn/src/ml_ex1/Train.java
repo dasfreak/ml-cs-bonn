@@ -18,13 +18,13 @@ public class Train {
 		tree.calculateTargetEntropy(DataStructureSingleton.getInstance1()); //calculate the entropy of the target which is used in other calculations
 		
 		Node temp;
-		Node nodeHighestEntropy=new Node(0, FileReader.pattern1[0], FileReader.nodesNames[0]); //ascribe values of first attribute to the temporary node
+		Node nodeHighestEntropy=new Node(0, DataStructureSingleton.getPattern1()[0], DataStructureSingleton.getNodeNames()[0]); //ascribe values of first attribute to the temporary node
 		nodeHighestEntropy.calculateEntropy(); //calculate entropy for the first attribute
 		
 		//finding node with the highest entropy (examining for each attribute)- first step of algorithm
 		//the upper range is -1 because the last attribute is the target
 		for (int i=1; i<FileReader.pattern1.length-1; i ++){
-			temp=new Node(i, FileReader.pattern1[i], FileReader.nodesNames[i]); //ascribte subsequent node to the temporary variable
+			temp=new Node(i, DataStructureSingleton.getPattern1()[i], DataStructureSingleton.getNodeNames()[i]); //ascribte subsequent node to the temporary variable
 			temp.calculateEntropy(); //calculate entropy for temporary node
 			
 			if (temp.entropy-nodeHighestEntropy.entropy>0){ //check if old one is greater than new one (looking for maximum entropy)
@@ -35,9 +35,8 @@ public class Train {
 	
 		tree.setRoot(nodeHighestEntropy); //setting root node for the one with the highest entropy (greedy algorithm)
 		
-		
-//		FileReader.printReadDataArray(DataStructureSingleton.getInstance1());
-//		FileReader.printReadDataArrayList(DataStructureSingleton.getInstance());
+		FileReader.printReadDataArray(DataStructureSingleton.getInstance1());
+		FileReader.printReadDataArrayList(DataStructureSingleton.getInstance());
 
 	}
 }

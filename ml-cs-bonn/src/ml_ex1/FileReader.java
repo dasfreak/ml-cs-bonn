@@ -25,7 +25,6 @@ public class FileReader {
 		File file = new File(file_name);
 
 		List<List<Attribute>> process_data= new ArrayList<List<Attribute>>();
-		
 		pattern=new ArrayList<Attribute>(); // pattern for each row (as ArrayList)
 		
 		//declare reader
@@ -37,12 +36,6 @@ public class FileReader {
 		line=reader.readLine(); // read the first line
 		
 		String[] line_splitted = line.split(","); //split string into parts by comma to find out what attribute should be in each column
-		
-		//calculate number of data rows for finding array dimensions
-		int rows_number=0;
-		while ((line = reader.readLine()) != null) {
-			rows_number++;
-		}
 		
 		
 		//iterate over all the elements of first line
@@ -65,7 +58,6 @@ public class FileReader {
 		reader.close();
 		
 		
-		
 		/* INITIALIZATION STAGE DONE, NOW WE PUT DATA INTO STRUCTURE */
 		
 		// declare new reader
@@ -77,7 +69,6 @@ public class FileReader {
 		
 		//read the lines till the end of file and put data into our structure
 		String[] line_read;
-		int line_counter=0;
 		
 		List<Attribute> row; // row as ArrayList
 		while ((line = reader.readLine()) != null) {
@@ -89,8 +80,6 @@ public class FileReader {
 				row.get(i).setData(line_read[i]);
 			}
 			process_data.add(row);
-			
-			line_counter++;
 		}
 				
 		reader.close();
