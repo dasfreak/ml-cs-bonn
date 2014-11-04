@@ -19,9 +19,7 @@ public class MarcTesting {
 
 		process_data= new ArrayList<List<Attribute>>();
 
-		process_data1=FileReader.loadDatasetFromFile("data_exercise_1.csv", process_data, process_data1);
-
-
+		
 		// FileReader.printReadDataArray(process_data1);
 		// FileReader.printReadDataArrayList(process_data);
 

@@ -13,18 +13,9 @@ public class Train {
 	public static Tree tree;
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		Attribute[][] process_data1 = null; 
-		List<List<Attribute>> process_data; 
 		
-		process_data= new ArrayList<List<Attribute>>();
-		
-		process_data1=FileReader.loadDatasetFromFile("data_exercise_1.csv", process_data, process_data1);
-			
-		
-		/** ELIAS- the structure for the tree- I think it is good, Tree object and Node object with Arraylist of children and parent reference **/	
 		tree=new Tree();
-		tree.calculateTargetEntropy(process_data1); //calculate the entropy of the target which is used in other calculations
-		
+		tree.calculateTargetEntropy(DataStructureSingleton.getInstance1()); //calculate the entropy of the target which is used in other calculations
 		
 		Node temp;
 		Node nodeHighestEntropy=new Node(0, FileReader.pattern1[0], FileReader.nodesNames[0]); //ascribe values of first attribute to the temporary node
@@ -45,14 +36,8 @@ public class Train {
 		tree.setRoot(nodeHighestEntropy); //setting root node for the one with the highest entropy (greedy algorithm)
 		
 		
-//		FileReader.printReadDataArray(process_data1);
-//		FileReader.printReadDataArrayList(process_data);
+//		FileReader.printReadDataArray(DataStructureSingleton.getInstance1());
+//		FileReader.printReadDataArrayList(DataStructureSingleton.getInstance());
 
-
-	
-		/**
-		 IT HAS TO BE MERGED WITH THE NODE CLASS FUNCTION calculateEntropy
-		 AS THERE WE WILL MAKE LOGICS OF SPLITS IF NECESSARY AND SAVING ENTROPY TO THE OBJECT PROPERTY.
-		 I WILL START WRITING FUNCTION calculateEntropy TODAY AFTER MY LANGUAGE COURSE **/
 	}
 }
