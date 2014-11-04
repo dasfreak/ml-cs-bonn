@@ -3,7 +3,7 @@ package ml_ex1;
 import java.util.Comparator;
 import java.util.List;
 
-public class SortNumerical {
+public class NumericalOperations {
 	
 	public static List<List<Attribute>> sort(List<List<Attribute>> process_data, int column) {
 
