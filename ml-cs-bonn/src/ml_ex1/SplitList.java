@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class SplitList {
 
-	public static List<List<List<Attribute>>> split(List<List<Attribute>> process_data, int column) {
-		
+	public static List<List<List<Attribute>>> split(List<List<Attribute>> process_data, int column, double threshold, List<String> S) {
+
 		//Split depends on datatype, returns 3D list containing the new subsets
 
 		List<List<List<Attribute>>> returnSet;
@@ -20,23 +20,36 @@ public class SplitList {
 
 		// check for datatype and create left and right Subset (delete used Attribute)
 		if (process_data.get(0).get(column) instanceof Numerical) {
-			//System.out.println("Numerical");
-			
-			SortNumerical.sort(process_data, column);
-		}
-		else if (process_data.get(0).get(column) instanceof Categorical) {
-			System.out.println("Categorical");
-		}
-		else if (process_data.get(0).get(column) instanceof Binary) {
-			//System.out.println("Binary");
 
 			for (int i=0; i<process_data.size(); i++){
-					if((boolean) process_data.get(i).get(column).getData() == true){	
-						process_data.get(i).remove(column);
-						rightSubset.add(process_data.get(i));
-					}else{
-						process_data.get(i).remove(column);
-						leftSubset.add(process_data.get(i));
+				if((double) process_data.get(i).get(column).getData() >= threshold){	
+					process_data.get(i).remove(column);
+					rightSubset.add(process_data.get(i));
+				}else{
+					process_data.get(i).remove(column);
+					leftSubset.add(process_data.get(i));
+				}
+			}
+		}
+		else if (process_data.get(0).get(column) instanceof Categorical) {
+			for (int i=0; i<process_data.size(); i++){
+				if(S.contains((String) process_data.get(i).get(column).getData())){	
+					process_data.get(i).remove(column);
+					rightSubset.add(process_data.get(i));
+				}else{
+					process_data.get(i).remove(column);
+					leftSubset.add(process_data.get(i));
+				}
+			}
+		}
+		else if (process_data.get(0).get(column) instanceof Binary) {
+			for (int i=0; i<process_data.size(); i++){
+				if((boolean) process_data.get(i).get(column).getData() == true){	
+					process_data.get(i).remove(column);
+					rightSubset.add(process_data.get(i));
+				}else{
+					process_data.get(i).remove(column);
+					leftSubset.add(process_data.get(i));
 				}
 			}
 
@@ -46,10 +59,10 @@ public class SplitList {
 			System.exit(0);
 		}				
 
-		
-		returnSet.add(rightSubset); //.get(0)
-		returnSet.add(leftSubset);//.get(1)
-		
+
+		returnSet.add(rightSubset); // test was true
+		returnSet.add(leftSubset);// test was false
+
 		return returnSet;
 
 	}
