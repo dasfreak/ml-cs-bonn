@@ -1,6 +1,7 @@
 package ml_ex1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Node {
 	
@@ -13,15 +14,24 @@ public class Node {
 	
 	public ArrayList<Node> children;
     public Node parent;
+    public List<Segment> segments; 
+    
 	
 	//do not know yet if class_name is necessary here, we will see later on
 	public Node(int index, Attribute attribute, String node_name){
+		segments=new ArrayList<Segment>();
 		this.name=node_name;
 		this.attribute=attribute;
 		this.index=index;
 	}
 	
+	public void extractSegments(){
+		
+	}
+	
 	public void calculateEntropy(){
+		extractSegments();
+		
 		this.entropy=0;
 		if (this.attribute instanceof Categorical){
 			System.out.println("1");

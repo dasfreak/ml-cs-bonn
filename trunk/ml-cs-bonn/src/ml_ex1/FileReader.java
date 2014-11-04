@@ -21,11 +21,88 @@ public class FileReader {
 	public static String[] nodesNames;
 	public int cols_number;
 	
-	public static Attribute[][] loadDatasetFromFile(String file_name, List<List<Attribute>> process_data, Attribute[][] process_data1) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public static List<List<Attribute>> loadDatasetFromFile(String file_name) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		File file = new File(file_name);
 
+		List<List<Attribute>> process_data= new ArrayList<List<Attribute>>();
+		
 		pattern=new ArrayList<Attribute>(); // pattern for each row (as ArrayList)
 		
+		//declare reader
+		BufferedReader reader = new BufferedReader(
+			new InputStreamReader(
+				new FileInputStream(file)));
+
+		String line; 
+		line=reader.readLine(); // read the first line
+		
+		String[] line_splitted = line.split(","); //split string into parts by comma to find out what attribute should be in each column
+		
+		//calculate number of data rows for finding array dimensions
+		int rows_number=0;
+		while ((line = reader.readLine()) != null) {
+			rows_number++;
+		}
+		
+		
+		//iterate over all the elements of first line
+		for (int i=0; i<line_splitted.length; i++){ 
+			String[] s = line_splitted[i].split(":");
+			nodesNames[i]=s[0];
+			if(s[1].equals("b")){
+				pattern.add(new Binary()); // binary pattern for arraryList
+			}
+			else if (s[1].equals("n")){
+				pattern.add(new Numerical()); // numerical pattern for arraryList
+			}
+			else if (s[1].equals("c")){
+				pattern.add(new Categorical());// categorical pattern for arraryList
+			}
+			else if (s[1].equals("t")){
+				pattern.add( new Target()); 	   // target pattern for arraryList
+			}
+		}
+		reader.close();
+		
+		
+		
+		/* INITIALIZATION STAGE DONE, NOW WE PUT DATA INTO STRUCTURE */
+		
+		// declare new reader
+		reader = new BufferedReader(
+				new InputStreamReader(
+					new FileInputStream(file)));
+
+		line=reader.readLine(); // read the first line with information about attributes
+		
+		//read the lines till the end of file and put data into our structure
+		String[] line_read;
+		int line_counter=0;
+		
+		List<Attribute> row; // row as ArrayList
+		while ((line = reader.readLine()) != null) {
+			row=new ArrayList<Attribute>();
+			line_read=line.split(","); //split into columns
+			//iterate over each element in certain row
+			for (int i=0; i<line_read.length; i++){ 			
+				row.add(pattern.get(i).getClass().getDeclaredConstructor().newInstance());
+				row.get(i).setData(line_read[i]);
+			}
+			process_data.add(row);
+			
+			line_counter++;
+		}
+				
+		reader.close();
+		
+		return process_data;
+	}
+	
+	
+	public static Attribute[][] loadDatasetFromFile1(String file_name) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		File file = new File(file_name);
+
+		Attribute[][] process_data1;
 		//declare reader
 		BufferedReader reader = new BufferedReader(
 			new InputStreamReader(
@@ -51,19 +128,15 @@ public class FileReader {
 			String[] s = line_splitted[i].split(":");
 			nodesNames[i]=s[0];
 			if(s[1].equals("b")){
-				pattern.add(new Binary()); // binary pattern for arraryList
 				pattern1[i]=new Binary();  //  binary pattern for arrays
 			}
 			else if (s[1].equals("n")){
-				pattern.add(new Numerical()); // numerical pattern for arraryList
 				pattern1[i]=new Numerical();  // numerical pattern for arrary
 			}
 			else if (s[1].equals("c")){
-				pattern.add(new Categorical());// categorical pattern for arraryList
 				pattern1[i]=new Categorical(); // categorical pattern for array
 			}
 			else if (s[1].equals("t")){
-				pattern.add( new Target()); 	   // target pattern for arraryList
 				pattern1[i]= new Target(); // target pattern for array
 			}
 		}
@@ -84,25 +157,18 @@ public class FileReader {
 		String[] line_read;
 		int line_counter=0;
 		
-		List<Attribute> row; // row as ArrayList
+
 		while ((line = reader.readLine()) != null) {
-			row=new ArrayList<Attribute>();
 			line_read=line.split(","); //split into columns
 			//iterate over each element in certain row
 			for (int i=0; i<line_read.length; i++){ 
 				process_data1[line_counter][i]=pattern1[i].getClass().getDeclaredConstructor().newInstance();
 				process_data1[line_counter][i].setData(line_read[i]);
-				
-				row.add(pattern.get(i).getClass().getDeclaredConstructor().newInstance());
-				row.get(i).setData(line_read[i]);
-			}
-			process_data.add(row);
-			
+			}	
 			line_counter++;
 		}
 				
 		reader.close();
-		
 		return process_data1;
 	}
 	
