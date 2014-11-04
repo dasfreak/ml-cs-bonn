@@ -7,13 +7,15 @@ public class SortNumerical {
 	// sort 2D Arraylist at column i
 	public static List<List<Attribute>> sort(List<List<Attribute>> process_data, int column) {
 
+		// check for object type
 		if (process_data.get(0).get(column) instanceof Numerical) {
 			//System.out.println("OK");
 		} else {
-			System.err.println("Error: Column is nor numerical, exiting program");
+			System.err.println("Error: Column is not numerical, exiting program");
 			System.exit(0);
 		}
 
+		// sort by value ascending
 		process_data.sort(new Comparator<List<Attribute>>() {
 
 			@Override
