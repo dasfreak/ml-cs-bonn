@@ -39,13 +39,15 @@ public class NumericalOperations {
 		
 		sort(process_data, column);
 		
-		String lastseen = "";
-		
-		for(int i = 0; i < process_data.size(); i++){
-			if(process_data.get(i).get(process_data.get(0).size()-1).getData() != lastseen){
-				if(!thresholds.contains((Double) process_data.get(i).get(column).getData())){
-				thresholds.add((Double) process_data.get(i).get(column).getData());
-				}
+		for(int i = 0; i < process_data.size()-1; i++){
+			
+			// if two following instances differ in target
+			if((boolean)process_data.get(i).get(process_data.get(0).size()-1).getData() != (boolean)process_data.get(i+1).get(process_data.get(0).size()-1).getData()){
+				
+					// save mean
+					double mean = ((Double) process_data.get(i).get(column).getData()+(Double) process_data.get(i+1).get(column).getData())/2;
+					thresholds.add(mean);
+				
 			}
 		}
 		
