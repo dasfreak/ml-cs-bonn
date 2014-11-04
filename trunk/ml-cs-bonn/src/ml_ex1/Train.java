@@ -27,12 +27,23 @@ public class Train {
 		//FileReader.printReadDataArrayList(process_data);
 		
 		
-		// super cool 3D List: 0 for right child, 1 for left child
+		// super cool 3D List: 0 where test is true, 1 for false
 		List<List<List<Attribute>>> Subsets;
 		Subsets = new ArrayList<List<List<Attribute>>>();
 		
-		// split dataset at column 4 (boolean)
-		Subsets = SplitList.split(process_data, 4);
+		// split dataset at column 4 (boolean), threshold and categorialset S isn't used in this example.
+		// c++ has default parameters, java does not :'(
+		//Subsets = SplitList.split(process_data, 0, -1, null);
+		
+		// split at column 1 (numerical) with threshold 48
+		// Subsets = SplitList.split(process_data, 0, 48, null);
+		
+		// split at column 2 (categorial) with set S
+		List<String> S =  new ArrayList<String>();
+		S.add("bb");
+		S.add("bc");
+		
+		Subsets = SplitList.split(process_data, 1, 48, S);
 		
 		FileReader.printReadDataArrayList(Subsets.get(0));
 	}
