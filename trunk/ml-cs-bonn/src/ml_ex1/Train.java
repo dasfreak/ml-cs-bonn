@@ -21,6 +21,10 @@ public class Train {
 									   
 		FileReader.printReadDataArray(process_data1);
 		FileReader.printReadDataArrayList(process_data);
+		
+		SortNumerical.sort(process_data, 0);
+		System.out.println("List sorted by column 0: ");
+		FileReader.printReadDataArrayList(process_data);
 	}
 
 }
