@@ -23,12 +23,8 @@ public class Train {
 		
 		/** ELIAS- the structure for the tree- I think it is good, Tree object and Node object with Arraylist of children and parent reference **/	
 		tree=new Tree();
-		tree.calculateTargetEntropy(process_data1);
-		//for each attribute calculate entropy 
+		tree.calculateTargetEntropy(process_data1); //calculate the entropy of the target which is used in other calculations
 		
-		//calculate the entropy of target and later pass it to other nodes where it is necessary for calculations
-		//Target target=new Target();
-		//double target_entropy=
 		
 		Node temp;
 		Node nodeHighestEntropy=new Node(0, FileReader.pattern1[0], FileReader.nodesNames[0]); //ascribe values of first attribute to the temporary node
