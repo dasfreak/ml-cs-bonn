@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class SplitList {
 
-	public static List<List<List<Attribute>>> split(List<List<Attribute>> dataset, int column, Double threshold, List<String> S, boolean deletAttribute) {
+	public static List<List<List<Attribute>>> split(List<List<Attribute>> dataset, int column, Double threshold, List<String> S, boolean deleteAttribute) {
 
 		//Split depends on datatype, returns 3D list containing the new subsets
 
@@ -23,21 +23,21 @@ public class SplitList {
 
 			for (int i=0; i<dataset.size(); i++){
 				if((double) dataset.get(i).get(column).getData() >= threshold){	// split with given threshold
-						if(deletAttribute) dataset.get(i).remove(column);
-					rightSubset.add(dataset.get(i));
+						if(deleteAttribute) dataset.get(i).remove(column); // only delete attribut if wanted
+					rightSubset.add(dataset.get(i)); // push to new Subset, where tests are true
 				}else{
-						if(deletAttribute) dataset.get(i).remove(column);
-					leftSubset.add(dataset.get(i));
+						if(deleteAttribute) dataset.get(i).remove(column);
+					leftSubset.add(dataset.get(i)); // push to new Subset, where tests are false
 				}
 			}
 		}
 		else if (dataset.get(0).get(column) instanceof Categorical) { // case: categorial
 			for (int i=0; i<dataset.size(); i++){
 				if(S.contains((String) dataset.get(i).get(column).getData())){ // split depending on given attributes
-					if(deletAttribute) dataset.get(i).remove(column);
+					if(deleteAttribute) dataset.get(i).remove(column);
 					rightSubset.add(dataset.get(i));
 				}else{
-					if(deletAttribute) dataset.get(i).remove(column);
+					if(deleteAttribute) dataset.get(i).remove(column);
 					leftSubset.add(dataset.get(i));
 				}
 			}
@@ -45,10 +45,10 @@ public class SplitList {
 		else if (dataset.get(0).get(column) instanceof Binary) { // case binary
 			for (int i=0; i<dataset.size(); i++){
 				if((boolean) dataset.get(i).get(column).getData() == true){	 // split into true and false
-					if(deletAttribute) dataset.get(i).remove(column);
+					if(deleteAttribute) dataset.get(i).remove(column);
 					rightSubset.add(dataset.get(i));
 				}else{
-					if(deletAttribute) dataset.get(i).remove(column);
+					if(deleteAttribute) dataset.get(i).remove(column);
 					leftSubset.add(dataset.get(i));
 				}
 			}
