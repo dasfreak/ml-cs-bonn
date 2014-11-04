@@ -7,6 +7,8 @@ import java.util.Map;
 public class SplitList {
 
 	public static List<List<List<Attribute>>> split(List<List<Attribute>> process_data, int column) {
+		
+		//Split depends on datatype, returns 3D list containing the new subsets
 
 		List<List<List<Attribute>>> returnSet;
 		List<List<Attribute>> leftSubset;
@@ -16,8 +18,11 @@ public class SplitList {
 		leftSubset = new ArrayList<List<Attribute>>();
 		rightSubset = new ArrayList<List<Attribute>>();
 
+		// check for datatype and create left and right Subset (delete used Attribute)
 		if (process_data.get(0).get(column) instanceof Numerical) {
-			System.out.println("Numerical");
+			//System.out.println("Numerical");
+			
+			SortNumerical.sort(process_data, column);
 		}
 		else if (process_data.get(0).get(column) instanceof Categorical) {
 			System.out.println("Categorical");
@@ -26,16 +31,12 @@ public class SplitList {
 			//System.out.println("Binary");
 
 			for (int i=0; i<process_data.size(); i++){
-				for (int j=0; j<process_data.get(0).size(); j++){
-
-					if((boolean) process_data.get(i).get(column).getData() == true){
-
+					if((boolean) process_data.get(i).get(column).getData() == true){	
+						process_data.get(i).remove(column);
 						rightSubset.add(process_data.get(i));
-
 					}else{
+						process_data.get(i).remove(column);
 						leftSubset.add(process_data.get(i));
-
-					}
 				}
 			}
 
@@ -43,8 +44,9 @@ public class SplitList {
 		else{
 			System.err.println("Unknown Attribute, exiting program");
 			System.exit(0);
-		}
+		}				
 
+		
 		returnSet.add(rightSubset); //.get(0)
 		returnSet.add(leftSubset);//.get(1)
 		
