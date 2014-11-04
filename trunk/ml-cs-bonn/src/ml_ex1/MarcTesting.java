@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MarcTesting {
+	
+	/*
+	 * Just some testing of my functions
+	 * 
+	 */
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
 
@@ -40,20 +45,20 @@ public class MarcTesting {
 		//Subsets = SplitList.split(process_data, 0, 49.0, null, false);
 
 		// find possible split thresholds
-		List<Double> thresholds = new ArrayList<Double>();
-		thresholds = NumericalOperations.findSplitLocations(process_data, 0);
+	//	List<Double> thresholds = new ArrayList<Double>();
+	//	thresholds = NumericalOperations.findSplitLocations(process_data, 0);
 
 		Double bestThreshold = 0.0;
 
-		for(int i = 0; i < thresholds.size(); i++) {
-System.out.println(thresholds.get(i)+",");
+		//for(int i = 0; i < thresholds.size(); i++) {
+			//System.out.println(thresholds.get(i)+",");
 			// split for every threshold candidate and don't delete the used Attribute!
 			//Subsets = SplitList.split(process_data, 0, thresholds.get(i), null, false);
 
 			// calculate information gain and save best
 			//TODO
 
-		}
+		//}
 
 		// finally split with best Threshold
 		//Subsets = SplitList.split(process_data, 0, bestThreshold, null);
@@ -63,6 +68,27 @@ System.out.println(thresholds.get(i)+",");
 		//S.add("bb");
 		//S.add("bc");
 		//S.add("bh");
+		//Subsets = SplitList.split(process_data, 1, -1.0, S, false);
+		
+		// start with empty S
+		List<String> S = new ArrayList<String>();
+		List<String> S_TMP = new ArrayList<String>();
+		
+		// get every possible value
+		int column = 1;
+		for(int i=0; i < process_data.size(); i++){
+			String value = (String) process_data.get(i).get(column).getData();
+			if(!S_TMP.contains(value)) S_TMP.add(value);
+		}
+		
+		// check every value in S_TMP and save the one with the highest gain to S, repeat until no more gain
+		//TODO
+		int bestValue = 0;
+		S.add(S_TMP.get(bestValue));
+		S_TMP.remove(bestValue);
+				
+		
+		// do the final spit with this set
 		//Subsets = SplitList.split(process_data, 1, -1.0, S, false);
 
 		//FileReader.printReadDataArrayList(Subsets.get(0));
