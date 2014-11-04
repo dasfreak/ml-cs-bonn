@@ -4,9 +4,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SortNumerical {
-	// sort 2D Arraylist at column i
+	
 	public static List<List<Attribute>> sort(List<List<Attribute>> process_data, int column) {
 
+		// sort 2D List at column i, returns the sorted list
+		
 		// check for object type
 		if (process_data.get(0).get(column) instanceof Numerical) {
 			//System.out.println("OK");

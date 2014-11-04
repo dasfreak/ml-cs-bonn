@@ -21,19 +21,20 @@ public class Train {
 									   
 		//FileReader.printReadDataArray(process_data1);
 		//FileReader.printReadDataArrayList(process_data);
-		
+
 		//SortNumerical.sort(process_data, 0);
 		//System.out.println("List sorted by column 0: ");
 		//FileReader.printReadDataArrayList(process_data);
 		
 		
+		// super cool 3D List: 0 for right child, 1 for left child
 		List<List<List<Attribute>>> Subsets;
 		Subsets = new ArrayList<List<List<Attribute>>>();
 		
-		// split data at column 4 (boolean)
+		// split dataset at column 4 (boolean)
 		Subsets = SplitList.split(process_data, 4);
 		
-		FileReader.printReadDataArrayList(Subsets.get(0)); // 0 for right child, 1 for left child
+		FileReader.printReadDataArrayList(Subsets.get(0));
 	}
 
 }
