@@ -15,5 +15,7 @@ public class Target extends Attribute<Boolean> {
 	public Boolean getData() {
 		return data;
 	}
+	
+	
 
 }

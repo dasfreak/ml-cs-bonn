@@ -7,6 +7,7 @@ public class Node {
 	public String name; //name of the node read from file
 	public int index; //column of the node in file
 	public double entropy;
+	public double entropy_of_target;
 	public double information_gain;
 	public Attribute attribute; //attribute of the node
 	
@@ -21,8 +22,17 @@ public class Node {
 	}
 	
 	public void calculateEntropy(){
-		
-		
+		this.entropy=0;
+		if (this.attribute instanceof Categorical){
+			System.out.println("1");
+			
+		}
+		else if (this.attribute instanceof Numerical){
+			System.out.println("2");
+		}
+		else if (this.attribute instanceof Binary){
+			System.out.println("3");
+		}
 	}
 	
 }

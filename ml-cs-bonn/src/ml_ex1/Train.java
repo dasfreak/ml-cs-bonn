@@ -23,14 +23,20 @@ public class Train {
 		
 		/** ELIAS- the structure for the tree- I think it is good, Tree object and Node object with Arraylist of children and parent reference **/	
 		tree=new Tree();
+		tree.calculateTargetEntropy(process_data1);
 		//for each attribute calculate entropy 
+		
+		//calculate the entropy of target and later pass it to other nodes where it is necessary for calculations
+		//Target target=new Target();
+		//double target_entropy=
 		
 		Node temp;
 		Node nodeHighestEntropy=new Node(0, FileReader.pattern1[0], FileReader.nodesNames[0]); //ascribe values of first attribute to the temporary node
 		nodeHighestEntropy.calculateEntropy(); //calculate entropy for the first attribute
 		
 		//finding node with the highest entropy (examining for each attribute)- first step of algorithm
-		for (int i=1; i<FileReader.pattern1.length; i ++){
+		//the upper range is -1 because the last attribute is the target
+		for (int i=1; i<FileReader.pattern1.length-1; i ++){
 			temp=new Node(i, FileReader.pattern1[i], FileReader.nodesNames[i]); //ascribte subsequent node to the temporary variable
 			temp.calculateEntropy(); //calculate entropy for temporary node
 			
@@ -39,7 +45,8 @@ public class Train {
 			}
 		}
 		
-		tree.setRoot(nodeHighestEntropy); //setting root node for the one with the highest entropy
+	
+		tree.setRoot(nodeHighestEntropy); //setting root node for the one with the highest entropy (greedy algorithm)
 		
 		
 //		FileReader.printReadDataArray(process_data1);
