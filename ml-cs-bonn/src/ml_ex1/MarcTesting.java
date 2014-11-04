@@ -24,7 +24,7 @@ public class MarcTesting {
 		// System.out.println("List sorted by column 0: ");
 		// FileReader.printReadDataArrayList(process_data);
 
-		// super cool 3D List: .get(0) where test is true, .get(1) for false
+		// super cool 3D List: .get(1) where test is true, .get(0) for false
 		List<List<List<Attribute>>> Subsets;
 		Subsets = new ArrayList<List<List<Attribute>>>();
 
@@ -46,9 +46,9 @@ public class MarcTesting {
 		Double bestThreshold = 0.0;
 
 		for(int i = 0; i < thresholds.size(); i++) {
-
+System.out.println(thresholds.get(i)+",");
 			// split for every threshold candidate and don't delete the used Attribute!
-			Subsets = SplitList.split(process_data, 0, thresholds.get(i), null, false);
+			//Subsets = SplitList.split(process_data, 0, thresholds.get(i), null, false);
 
 			// calculate information gain and save best
 			//TODO
@@ -65,7 +65,7 @@ public class MarcTesting {
 		//S.add("bh");
 		//Subsets = SplitList.split(process_data, 1, -1.0, S, false);
 
-		FileReader.printReadDataArrayList(Subsets.get(0));
+		//FileReader.printReadDataArrayList(Subsets.get(0));
 
 	}
 }

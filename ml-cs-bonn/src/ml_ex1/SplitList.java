@@ -60,8 +60,8 @@ public class SplitList {
 		}				
 
 
-		returnSet.add(rightSubset); // test was true
 		returnSet.add(leftSubset);// test was false
+		returnSet.add(rightSubset); // test was true
 
 		return returnSet;
 

@@ -54,52 +54,9 @@ public class Train {
 
 
 	
-		/**MARK'S CODE BELOW- MARK PLEASE CHECK AND MERGE WITH ABOVE !!! 
+		/**
 		 IT HAS TO BE MERGED WITH THE NODE CLASS FUNCTION calculateEntropy
 		 AS THERE WE WILL MAKE LOGICS OF SPLITS IF NECESSARY AND SAVING ENTROPY TO THE OBJECT PROPERTY.
 		 I WILL START WRITING FUNCTION calculateEntropy TODAY AFTER MY LANGUAGE COURSE **/
-		
-//		List<List<List<Attribute>>> Subsets;
-//		Subsets = new ArrayList<List<List<Attribute>>>();
-//
-//		// split dataset at column 4 (boolean), threshold and categorialset S
-//		// isn't used in this example.
-//		// c++ has default parameters, java does not :'(
-//		// Subsets = SplitList.split(process_data, 0, -1, null);
-//
-//		// NumericalOperations.sort(process_data, 0);
-//		// FileReader.printReadDataArrayList(process_data);
-//
-//		// split at column 0 (numerical) with threshold 48
-//		// Subsets = SplitList.split(process_data, 0, 48, null);
-//
-//		// find possible split thresholds
-//		List<Double> thresholds;
-//		thresholds = new ArrayList<Double>();
-//		thresholds = NumericalOperations.findSplitLocations(process_data, 0);
-//
-//		for (int i = 0; i < thresholds.size(); i++) {
-//			
-//			// split for every threshold candidate
-//			Subsets = SplitList.split(process_data, 0, thresholds.get(i), null);
-//			
-//			// calculate information gain for every split and save best
-//			//TODO
-//			
-//			Double bestThreshold = 0.0;
-//			
-//			//System.out.print(thresholds.get(i) + ",");
-//		}
-//
-//		// split at column 1 (categorical) with set S
-//		// List<String> S = new ArrayList<String>();
-//		// S.add("bb");
-//		// S.add("bc");
-//		// S.add("bh");
-//
-//		// Subsets = SplitList.split(process_data, 1, -1, S);
-//
-//		// FileReader.printReadDataArrayList(Subsets.get(0));
-
 	}
 }
