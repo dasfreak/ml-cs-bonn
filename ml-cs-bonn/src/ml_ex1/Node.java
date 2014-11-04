@@ -22,11 +22,13 @@ public class Node {
 		segments=new ArrayList<Segment>();
 		this.name=node_name;
 		this.attribute=attribute;
-		this.index=index;
+		this.index=index; //column in our data set
 	}
 	
 	public void extractSegments(){
-		
+		for (int i=0; i <DataStructureSingleton.getInstance1().length; i++){
+			
+		}
 	}
 	
 	public void calculateEntropy(){

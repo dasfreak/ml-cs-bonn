@@ -17,14 +17,14 @@ public class DataStructureSingleton {
 	      // Exists only to defeat instantiation.
 	}
 	
-	public static List<List<Attribute>> getInstance() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+	public static List<List<Attribute>> getInstance()  {
 	      if(instance == null) {
 	         instance = FileReader.loadDatasetFromFile("data_exercise_1.csv");
 	      }
 	      return instance;
 	}
 	
-	public static Attribute[][] getInstance1() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+	public static Attribute[][] getInstance1() {
 	      if(instance1 == null) {
 	         instance1 = FileReader.loadDatasetFromFile1("data_exercise_1.csv");
 	      }
