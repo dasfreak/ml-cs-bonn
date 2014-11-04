@@ -6,7 +6,7 @@ import java.util.List;
 
 public class NumericalOperations {
 	
-	public static List<List<Attribute>> sort(List<List<Attribute>> process_data, int column) {
+	public static List<List<Attribute>> sort(List<List<Attribute>> process_data, final int column) {
 
 		// sort 2D List at column i, returns the sorted list
 		

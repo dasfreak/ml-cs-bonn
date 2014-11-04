@@ -18,6 +18,7 @@ public class FileReader {
 	
 	public static List<Attribute> pattern;
 	public static Attribute[] pattern1;
+	public static String[] nodesNames;
 	public int cols_number;
 	
 	public static Attribute[][] loadDatasetFromFile(String file_name, List<List<Attribute>> process_data, Attribute[][] process_data1) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
@@ -43,10 +44,12 @@ public class FileReader {
 		
 		process_data1=new Attribute[rows_number][line_splitted.length]; // array of attributes
 		pattern1=new Attribute[line_splitted.length]; // pattern array which keeps attribute for each column
+		nodesNames=new String[line_splitted.length];
 		
 		//iterate over all the elements of first line
 		for (int i=0; i<line_splitted.length; i++){ 
 			String[] s = line_splitted[i].split(":");
+			nodesNames[i]=s[0];
 			if(s[1].equals("b")){
 				pattern.add(new Binary()); // binary pattern for arraryList
 				pattern1[i]=new Binary();  //  binary pattern for arrays
