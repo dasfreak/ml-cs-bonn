@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class SplitList {
 
-	public static List<List<List<Attribute>>> split(List<List<Attribute>> process_data, int column, double threshold, List<String> S) {
+	public static List<List<List<Attribute>>> split(List<List<Attribute>> dataset, int column, Double threshold, List<String> S, boolean deletAttribute) {
 
 		//Split depends on datatype, returns 3D list containing the new subsets
 
@@ -19,37 +19,37 @@ public class SplitList {
 		rightSubset = new ArrayList<List<Attribute>>();
 
 		// check for datatype and create left and right Subset (delete used Attribute)
-		if (process_data.get(0).get(column) instanceof Numerical) {
+		if (dataset.get(0).get(column) instanceof Numerical) {
 
-			for (int i=0; i<process_data.size(); i++){
-				if((double) process_data.get(i).get(column).getData() >= threshold){	
-					process_data.get(i).remove(column);
-					rightSubset.add(process_data.get(i));
+			for (int i=0; i<dataset.size(); i++){
+				if((double) dataset.get(i).get(column).getData() >= threshold){	
+						if(deletAttribute) dataset.get(i).remove(column);
+					rightSubset.add(dataset.get(i));
 				}else{
-					process_data.get(i).remove(column);
-					leftSubset.add(process_data.get(i));
+						if(deletAttribute) dataset.get(i).remove(column);
+					leftSubset.add(dataset.get(i));
 				}
 			}
 		}
-		else if (process_data.get(0).get(column) instanceof Categorical) {
-			for (int i=0; i<process_data.size(); i++){
-				if(S.contains((String) process_data.get(i).get(column).getData())){	
-					process_data.get(i).remove(column);
-					rightSubset.add(process_data.get(i));
+		else if (dataset.get(0).get(column) instanceof Categorical) {
+			for (int i=0; i<dataset.size(); i++){
+				if(S.contains((String) dataset.get(i).get(column).getData())){	
+					if(deletAttribute) dataset.get(i).remove(column);
+					rightSubset.add(dataset.get(i));
 				}else{
-					process_data.get(i).remove(column);
-					leftSubset.add(process_data.get(i));
+					if(deletAttribute) dataset.get(i).remove(column);
+					leftSubset.add(dataset.get(i));
 				}
 			}
 		}
-		else if (process_data.get(0).get(column) instanceof Binary) {
-			for (int i=0; i<process_data.size(); i++){
-				if((boolean) process_data.get(i).get(column).getData() == true){	
-					process_data.get(i).remove(column);
-					rightSubset.add(process_data.get(i));
+		else if (dataset.get(0).get(column) instanceof Binary) {
+			for (int i=0; i<dataset.size(); i++){
+				if((boolean) dataset.get(i).get(column).getData() == true){	
+					if(deletAttribute) dataset.get(i).remove(column);
+					rightSubset.add(dataset.get(i));
 				}else{
-					process_data.get(i).remove(column);
-					leftSubset.add(process_data.get(i));
+					if(deletAttribute) dataset.get(i).remove(column);
+					leftSubset.add(dataset.get(i));
 				}
 			}
 
