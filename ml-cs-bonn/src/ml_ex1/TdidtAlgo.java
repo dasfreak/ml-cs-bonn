@@ -60,6 +60,8 @@ public class TdidtAlgo {
 		
 		for ( int j = 0; j < FileReader.pattern1.length-1; j++ )
 		{
+			System.out.println("Itteration of the main loop: "+j);
+			highestInformationGain=0.0;
 			for ( int i = 0; i < columns.length; i++ ){
 				if ( null == columns[i] )
 				{
@@ -68,20 +70,20 @@ public class TdidtAlgo {
 				currentNode = new Node(i, DataStructureSingleton.getPattern1()[i], DataStructureSingleton.getNodeNames()[i], parent); //ascribte subsequent node to the temporary variable
 				parent.children.add(currentNode);
 				
-				System.out.println( currentNode.parent.entropy);
+				//System.out.println( currentNode.parent.entropy);
 				currentNode.calculateInformationGain( attributes, currentNode.parent.entropy, attributes.length ); //calculate entropy for temporary node
 				
 				if ( currentNode.informationGain > highestInformationGain ){ //check if old one is greater than new one (looking for maximum entropy)
 					nodeHighestEntropy = currentNode; //if greater save node with maximum entropy to nodeHighestEntropy
+					System.out.println("current node index:"+ currentNode.index+" i:"+i);
 					highestInformationGain = currentNode.informationGain;
 				}
-				columns[i] = null; // done with this column
 			}
+			System.out.println("index "+ nodeHighestEntropy.index);
+			columns[nodeHighestEntropy.index] = null; // done with this column
 			//copy columns once again
-			columns = new String[FileReader.pattern1.length -1];
-			System.arraycopy(FileReader.nodesNames, 0, columns, 0, FileReader.pattern1.length - 1 );
-			
-			System.out.println(j);
+//			columns = new String[FileReader.pattern1.length -1];
+//			System.arraycopy(FileReader.nodesNames, 0, columns, 0, FileReader.pattern1.length - 1 );
 			
 			parent = nodeHighestEntropy;
 
