@@ -4,12 +4,10 @@ import java.util.List;
 
 public class DataStructureSingleton {
 	private static List<List<Attribute>> instance = null;
-	private static List<Attribute> pattern = null;
-	
+	private List<Attribute> pattern = null;
 	private static Attribute[][] instance1 = null; 
 	private static Attribute[] pattern1;
-	
-	public static String[] nodesNames;
+	private static String[] nodesNames;
 	
 	protected DataStructureSingleton() {
 	      // Exists only to defeat instantiation.
@@ -29,7 +27,7 @@ public class DataStructureSingleton {
 	      return instance1;
 	}	
 	
-	public static List<Attribute> getPattern() {
+	private List<Attribute> getPattern() {
 	      if(pattern == null) {
 	    	  pattern = FileReader.pattern;
 	      }
