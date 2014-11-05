@@ -14,7 +14,7 @@ public class Node {
 
 	public ArrayList<Node> children;
     public Node parent=null;
-	Subset maximal = null;
+    public Subset maximal = null;
     public List<Subset> subsets; 
     
 	
@@ -54,27 +54,20 @@ public class Node {
 				subsets.add(temp);
 			}
 		}
+		
+		//System.out.println("Sybset length: "+subsets.size());
 	}
 	
 	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range) {	
 		
-		
 		if (this.attribute instanceof Categorical || this.attribute instanceof Binary ){
 			extractSegments(attributes);
-			
-			/**uncomment if you want to see how many yes and no are there for each segment **/
-//			System.out.println("column: "+index+" segments size: "+segments.size());
-//			for (int s=0; s<segments.size(); s++){
-//				System.out.println("segment: "+s+ ", number of yes: "+ segments.get(s).yes_number);
-//				System.out.println("segment: "+s+ ", number of no: "+ segments.get(s).no_number);
-//			}
-//			System.out.print('\n');
 			
 			double entropySegment = 0;
 			for ( Subset s : subsets) {
 				double segmentSize = s.yesCount + s.noCount;
-				s.entropy = ((double)segmentSize/(double)range)*Entropy.calcEntropy(s.yesCount, s.noCount);
-				entropySegment += s.entropy;
+				s.entropy = Entropy.calcEntropy(s.yesCount, s.noCount);
+				entropySegment += ((double)segmentSize/(double)range)*s.entropy;
 //				System.out.println(all_for_current_segment);
 			}
 			
@@ -83,11 +76,15 @@ public class Node {
 				if ( s.entropy > maxSubsetEntropy )
 				{
 					maxSubsetEntropy = s.entropy;
-					maximal          = s;
+					this.maximal          = s;
 				}
 			}
-			
-			this.informationGain = entropyParent - entropySegment;
+			this.entropy=maximal.entropy;
+			this.informationGain = entropyParent - entropySegment;	
+		}
+		else{
+			 //this is just to avoid null pointer exception
+			//System.out.println("here is numerical column");
 			
 		}
 		/**TODO: sort and split on numerical data**/
