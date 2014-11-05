@@ -8,8 +8,8 @@ public class Node {
 	public String name; //name of the node read from file
 	public int index; //column of the node in file
 	public double entropy;
-	public double all_records;
-	public double information_gain;
+	public double numRecords;
+	public double informationGain;
 	public Attribute attribute; //attribute of the node
 	
 	public ArrayList<Node> children;
@@ -18,9 +18,9 @@ public class Node {
     
 	
 	//do not know yet if class_name is necessary here, we will see later on
-	public Node(int index, Attribute attribute, String node_name){
+	public Node(int index, Attribute attribute, String nodeName){
 		segments=new ArrayList<Segment>();
-		this.name=node_name;
+		this.name=nodeName;
 		this.attribute=attribute;
 		this.index=index; //column in our data set
 	}
@@ -64,7 +64,7 @@ public class Node {
 		}
 	}
 	
-	public void calculateInformationGain(double entropy_parent, double range){	
+	public void calculateInformationGain(double entropyParent, double range){	
 		
 		
 		if (this.attribute instanceof Categorical || this.attribute instanceof Binary){
@@ -78,14 +78,14 @@ public class Node {
 //			}
 //			System.out.print('\n');
 			
-			double entropy_temp=0;
+			double entropyTemp=0;
 			for (int i=0; i<segments.size(); i++){
 				double all_for_current_segment=segments.get(i).yes_number+ segments.get(i).no_number;
-				entropy_temp+= (all_for_current_segment/range)*Entropy.calcEntropy(segments.get(i).yes_number, segments.get(i).no_number);
+				entropyTemp+= (all_for_current_segment/range)*Entropy.calcEntropy(segments.get(i).yes_number, segments.get(i).no_number);
 //				System.out.println(all_for_current_segment);
 			}
 			
-			this.information_gain=entropy_parent-entropy_temp;
+			this.informationGain=entropyParent-entropyTemp;
 			
 		}
 		/**TODO: sort and split on numerical data**/

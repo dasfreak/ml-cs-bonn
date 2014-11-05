@@ -1,7 +1,5 @@
 package ml_ex1;
 
-import java.nio.charset.Charset;
-
 public class Binary extends Attribute<Boolean> {
 	boolean data;
 	
