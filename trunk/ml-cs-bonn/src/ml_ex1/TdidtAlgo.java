@@ -12,7 +12,8 @@ public class TdidtAlgo {
 	public  TdidtAlgo()
 	{
 		this.range = DataStructureSingleton.getInstance1().length;
-		calculateTargetEntropy(DataStructureSingleton.getInstance1());	
+		calculateTargetEntropy(DataStructureSingleton.getInstance1());
+		findHighestEntropy( targetEntropy, range );
 	}
 	
 	/*calculating entropy of the target column*/
@@ -34,7 +35,7 @@ public class TdidtAlgo {
 		targetEntropy = Entropy.calcEntropy(yesCount, noCount);
 	}
 	
-	public void findHighestEntropy( double entropy, double range ){
+	private void findHighestEntropy( double entropy, double range ){
 		Node temp;
 		Node nodeHighestEntropy=new Node( 0, DataStructureSingleton.getPattern1()[0], DataStructureSingleton.getNodeNames()[0] ); //ascribe values of first attribute to the temporary node
 		nodeHighestEntropy.calculateInformationGain(entropy, range); //calculate entropy for the first attribute
