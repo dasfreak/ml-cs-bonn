@@ -7,8 +7,9 @@ public class Entropy {
 	    return (double) (Math.log(x) / Math.log(base));
 	}
 	
-	static double calcEntropy(double first_set, double second_set, double all )
+	static double calcEntropy(double first_set, double second_set )
 	{
+		double all=first_set+second_set;
 		return ( first_set/(all) )*Entropy.log( (1.0/(first_set/all)) , 2 ) + ( second_set/all ) * Entropy.log( (1.0/(second_set/all)) ,2 );
 	}
 }
