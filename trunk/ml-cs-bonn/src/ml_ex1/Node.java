@@ -75,7 +75,7 @@ public class Node {
 		return attributes;
 	}
 	
-	public List<Subset> extractNumericalSubsets( Attribute[][] attributes ){
+	public List<DisjointSets> extractNumericalSubsets( Attribute[][] attributes ){
 		
 		int targetColumn = attributes[0].length-1;
 		Subset below ;
@@ -83,7 +83,7 @@ public class Node {
 		Binary belowMean;
 		Binary notBelowMean;
 		double mean;
-		List<Subset> subsets = new ArrayList<Subset>();
+		List<DisjointSets> subsets = new ArrayList<DisjointSets>();
 		
 		belowMean=new Binary();
 		belowMean.setData("yes");
@@ -126,7 +126,7 @@ public class Node {
 						}
 					}
 //					System.out.println("index: "+i+" numOccurencesBelow = " + below.numOccurrences + " numOccurencesHigher = "+above.numOccurrences + " mean = "+mean);
-					subsets.add(below);
+					subsets.add(new DisjointSets( below, above, mean ) );
 					//subsetsTemp.add(above);
 			}
 		}
@@ -167,11 +167,14 @@ public class Node {
 				System.out.println();
 			}
 			
-			List<Subset> subsets = extractNumericalSubsets(attributes);
+			List<DisjointSets> subsets = extractNumericalSubsets(attributes);
 			System.out.println("=============");
 			
-			for ( Subset s : subsets ) {
-				System.out.println(s.numOccurrences +" yesCount = " + s.yesCount + " noCount = "+s.noCount);
+			for ( DisjointSets s : subsets ) {
+				System.out.println("mean = "+s.mean+ ", set1 num occurences = "+ s.set1.numOccurrences + 
+						", set1 yesCount = " + s.set1.yesCount + ", set1 noCount = "+s.set1.noCount+
+						", set2 num occurences = "+ s.set2.numOccurrences + 
+						", set2 yesCount = " + s.set2.yesCount + ", set2 noCount = "+s.set2.noCount );
 			}
 			
 			System.exit(0);
