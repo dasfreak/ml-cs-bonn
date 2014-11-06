@@ -80,7 +80,7 @@ public class TdidtAlgo {
 					highestInformationGain = currentNode.informationGain;
 				}
 			}
-			if(highestInformationGain==0){
+			if( 0 == highestInformationGain ){
 				System.out.println("end of the tree, more splits do not give better results for that branch");
 				break;
 			}
@@ -121,5 +121,11 @@ public class TdidtAlgo {
 		}
 		
 		return subArray;
+	}
+
+	public void printTree() {
+		System.out.println(" ======== Tree Printing Began ========");
+		System.out.println(tree);
+		System.out.println(" ======== Tree Printing Ended ========");
 	}
 }
