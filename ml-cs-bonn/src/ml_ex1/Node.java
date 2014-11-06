@@ -1,6 +1,8 @@
 package ml_ex1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Node {
@@ -30,7 +32,7 @@ public class Node {
 	
 	
 	/* extracts segments for certain data column and saves this segment into segments list */
-	public void extractSegments(Attribute[][] attributes){
+	public void extractSubsets(Attribute[][] attributes){
 		for (int i=0; i<attributes.length ; i++){
 			boolean isFound=false;
 			Subset initial = new Subset(attributes[i][this.index]);
@@ -58,9 +60,43 @@ public class Node {
 		//System.out.println("Sybset length: "+subsets.size());
 	}
 	
-	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range, int main_loop, int second_loop) {	
+	
+	public Attribute[][] sortArray(Attribute[][] attributes){
+		
+		Arrays.sort(attributes, new Comparator<Attribute[]>() {
+
+			public int compare(Attribute[] o1, Attribute[] o2) {
+				Double var1 = (Double) o1[index].getData();
+	            Double var2 = (Double) o2[index].getData();
+	            return var1.compareTo(var2);
+			}
+		});
+		
+		return attributes;
+	}
+	
+	public void extractNumericalSubsets(Attribute[][] attributes){
+		List<Double> thresholds;
+		thresholds = new ArrayList<Double>();
+		
+		int targetColumn=attributes[0].length-1;
+		
+		for (int i=0; i<attributes.length-1 ; i++){
+			
+			// if two following rows differ in target data
+			if((boolean)attributes[i][targetColumn].getData() != (boolean)attributes[i-1][targetColumn].getData()){
+					//do the split and calculate the entropy
+					double mean = ((Double)attributes[i][index].getData() + (Double)attributes[i+1][index].getData())/2;
+					//Subset initial = new Subset(attributes[i][this.index]);
+					
+				
+			}
+		}
+	}
+	
+	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range) {	
 		if (this.attribute instanceof Categorical || this.attribute instanceof Binary ){
-			extractSegments(attributes);		
+			extractSubsets(attributes);		
 			
 			double entropySegment = 0;
 			for ( Subset s : subsets) {
@@ -81,15 +117,23 @@ public class Node {
 			this.entropy=maximal.entropy;
 			this.informationGain = entropyParent - entropySegment;	
 		}
-		else{
-			 //this is just to avoid null pointer exception
-			//System.out.println("here is numerical column");
+		else if (this.attribute instanceof Numerical) {
+			attributes=sortArray(attributes);
+			
+//			System.out.println("===================SORTED ARRAY PRINT====================");
+//			for (int it=0; it<attributes.length; it++){
+//				for (int jt=0; jt<attributes[0].length; jt++){
+//					System.out.print( attributes[it][jt].getData()+" , ");
+//				}
+//				System.out.println();
+//			}
+			
+			
 			
 		}
-		/**TODO: sort and split on numerical data**/
-//		else if (this.attribute instanceof Numerical){
-//			System.out.println("2");
-//		}
+		else{
+			System.out.println("some error");
+		}
 
 	}
 }
