@@ -69,6 +69,12 @@ public class TdidtAlgo {
 				currentNode = new Node(i, DataStructureSingleton.getPattern1()[i], DataStructureSingleton.getNodeNames()[i], parent); //ascribte subsequent node to the temporary variable
 				parent.children.add(currentNode);
 				
+				// 1. get parent node is done above
+				// 2. return subsets of the node
+				// 3. for each subset get the best node which is not already in the branch (can be on the same level)
+				
+				
+				
 				//System.out.println( currentNode.parent.entropy);
 				currentNode.calculateInformationGain( attributes, currentNode.parent.entropy, attributes.length); //calculate entropy for temporary node
 				System.out.println("current information gain: " +currentNode.informationGain+" for index: "+i);
