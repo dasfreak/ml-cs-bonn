@@ -74,7 +74,7 @@ public class TdidtAlgo {
 				parent.children.add(currentNode);
 				
 				//System.out.println( currentNode.parent.entropy);
-				currentNode.calculateInformationGain( attributes, currentNode.parent.entropy, attributes.length, j, i ); //calculate entropy for temporary node
+				currentNode.calculateInformationGain( attributes, currentNode.parent.entropy, attributes.length); //calculate entropy for temporary node
 				System.out.println("current information gain: " +currentNode.informationGain+" for index: "+i);
 				if ( currentNode.informationGain > highestInformationGain ){ //check if old one is greater than new one (looking for maximum entropy)
 					isChange=true;
