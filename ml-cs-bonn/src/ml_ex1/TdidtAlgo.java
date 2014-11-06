@@ -64,6 +64,7 @@ public class TdidtAlgo {
 			System.out.println("Itteration of the main loop: "+j);
 			System.out.println("Parent entropy: " + parent.entropy);
 			highestInformationGain=0.0;
+			boolean isChange=false;
 			for ( int i = 0; i < columns.length; i++ ){
 				if ( null == columns[i] )
 				{
@@ -76,10 +77,16 @@ public class TdidtAlgo {
 				currentNode.calculateInformationGain( attributes, currentNode.parent.entropy, attributes.length, j, i ); //calculate entropy for temporary node
 				System.out.println("current information gain: " +currentNode.informationGain+" for index: "+i);
 				if ( currentNode.informationGain > highestInformationGain ){ //check if old one is greater than new one (looking for maximum entropy)
+					isChange=true;
 					nodeHighestEntropy = currentNode; //if greater save node with maximum entropy to nodeHighestEntropy
 					highestInformationGain = currentNode.informationGain;
 				}
 			}
+			if(isChange==false){
+				System.out.println("end of the tree, more splits do not give better results for that branch");
+				break;
+			}
+			
 			System.out.println("Attribute selected as a node with index "+ nodeHighestEntropy.index);
 			columns[nodeHighestEntropy.index] = null; // done with this column
 			
