@@ -10,8 +10,10 @@ public class Tree {
 	{
 		String tree = "";
 		Node parent = root;
-		tree+=parent.index;
-		
+		for ( Node n : root.children )
+		{
+			tree += n.toString() +"\n";
+		}
 		return tree;
 	}
 }
