@@ -3,8 +3,8 @@ package ml_ex1;
 public class Subset {
 	public int numOccurrences; 
 	public Attribute attr;
-	public double yesCount;
-	public double noCount;
+	public int yesCount;
+	public int noCount;
 	public double entropy;
 	public double informationGain;
 	
