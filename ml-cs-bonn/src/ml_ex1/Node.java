@@ -7,8 +7,10 @@ import java.util.List;
 
 public class Node {
 	
+	public static int nodeCounter = 0;
 	public String name; //name of the node read from file
 	public int index; //column of the node in file
+	public int nodeNum;
 	public double entropy;
 	public int numRecords;
 	public double informationGain;
@@ -29,6 +31,57 @@ public class Node {
 		this.index     = index; //column in our data set
 		this.parent    = parent;
 		this.children  = new ArrayList<Node>();
+		nodeNum = nodeCounter;
+		nodeCounter++;
+	}
+	
+	public String toString(){
+		 
+		String str = "";
+		String test="";
+		String children = "";
+		if ( maximal.attr instanceof Binary )
+		{
+			test = FileReader.nodesNames[this.index];
+		}
+		else if ( maximal.attr instanceof Categorical )
+		{
+			test = FileReader.nodesNames[this.index] +" in {";
+			this.subsets.sort( new Comparator<Subset>() {
+
+				public int compare(Subset o1, Subset o2) {
+					return ((String)o1.attr.getData()).compareTo((String)o2.attr.getData());
+				}
+				});
+			for ( Subset s: this.subsets)
+			{
+				if ( this.subsets.get(this.subsets.size()-1) == s )
+				{
+					test += s.attr.getData();
+				}
+				else
+				{
+					test += s.attr.getData() +",";
+				}
+			}
+			test +="}";
+		}
+		
+		else if ( maximal.attr instanceof Numerical )
+		{
+			test = FileReader.nodesNames[this.index]+" < " + maximal.attr.getData();
+		}
+		
+		for ( Node n : this.children )
+		{
+			children += " "+n.nodeNum;
+		}
+		str += nodeNum + " "+test+children;
+		for ( Node n : this.children)
+		{
+			str += "\n"+n.toString();
+		}
+		return str;
 	}
 	
 	
