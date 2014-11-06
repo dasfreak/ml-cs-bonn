@@ -40,13 +40,13 @@ public class NumericalOperations {
 		sort(process_data, column);
 		
 		// for every entry in table, check 
-		for(int i = 0; i < process_data.size()-1; i++){
+		for( int i = 0; i < process_data.size()-1; i++ ){
 			
 			// if two following instances differ in target
 			if((boolean)process_data.get(i).get(process_data.get(0).size()-1).getData() != (boolean)process_data.get(i+1).get(process_data.get(0).size()-1).getData()){
 				
 					// then save mean
-					double mean = ((Double) process_data.get(i).get(column).getData()+(Double) process_data.get(i+1).get(column).getData())/2;
+					double mean = ((double) process_data.get(i).get(column).getData()+(double) process_data.get(i+1).get(column).getData())/2;
 					thresholds.add(mean);
 				
 			}
