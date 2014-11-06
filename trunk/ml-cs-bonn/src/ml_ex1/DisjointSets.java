@@ -4,6 +4,8 @@ public class DisjointSets {
 	Subset set1;
 	Subset set2;
 	double mean;
+	double entropySubsets;
+	double informationGain;
 	
 	public DisjointSets( Subset set1, Subset set2, double mean )
 	{
