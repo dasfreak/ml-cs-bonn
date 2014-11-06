@@ -58,19 +58,18 @@ public class Node {
 		//System.out.println("Sybset length: "+subsets.size());
 	}
 	
-	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range) {	
-		
+	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range, int main_loop, int second_loop) {	
 		if (this.attribute instanceof Categorical || this.attribute instanceof Binary ){
-			extractSegments(attributes);
+			extractSegments(attributes);		
 			
 			double entropySegment = 0;
 			for ( Subset s : subsets) {
 				double segmentSize = s.yesCount + s.noCount;
 				s.entropy = Entropy.calcEntropy(s.yesCount, s.noCount);
 				entropySegment += ((double)segmentSize/(double)range)*s.entropy;
-//				System.out.println(all_for_current_segment);
+
 			}
-			
+					
 			double maxSubsetEntropy = 0;
 			for ( Subset s : subsets) {
 				if ( s.entropy > maxSubsetEntropy )
