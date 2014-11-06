@@ -9,10 +9,13 @@ public class Numerical extends Attribute<Double> {
 		this.data=Double.parseDouble(s);
 		
 	}
+	
+	public void setData(Double d) {
+		this.data=d;
+	}
 
 	public Double getData() {
 		return data;
 	}
-
 	
 }

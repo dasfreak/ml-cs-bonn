@@ -95,16 +95,46 @@ public class TdidtAlgo {
 	private Attribute[][] getSubsetOfTable( Attribute[][] grandSetAttributes, int index, Subset subset) {
 		
 		Attribute[][] subArray = new Attribute[subset.numOccurrences][grandSetAttributes[0].length];
+		
+		System.out.println("number of occurencies fo subset: "+subset.numOccurrences);
 		int j = 0;
-		for ( int i = 0; i < grandSetAttributes.length; i++ )
-		{
-			if ( subset.attr.getData().equals(grandSetAttributes[i][index].getData() ) )
+		
+		if(subset.attr instanceof Categorical || subset.attr instanceof Binary){ //create array for categorical or binary comparison
+			for ( int i = 0; i < grandSetAttributes.length; i++ )
 			{
-				System.arraycopy(grandSetAttributes[i], 0, subArray[j], 0, grandSetAttributes[0].length);
-				j++;
+				if ( subset.attr.getData().equals(grandSetAttributes[i][index].getData() ) )
+				{
+					System.arraycopy(grandSetAttributes[i], 0, subArray[j], 0, grandSetAttributes[0].length);
+					j++;
+				}
 			}
 		}
-		
+		else{ //create array for numerical comparison	
+			for ( int i = 0; i < grandSetAttributes.length; i++ )
+			{
+				if (subset.isAbove==true){
+					//System.out.println("mean of subset: "+(Double)subset.attr.getData());
+					//System.out.println("value from arrtributes"+(Double)grandSetAttributes[i][index].getData());
+					if ( (double)grandSetAttributes[i][index].getData() > (double)subset.attr.getData() )
+					{
+						System.arraycopy(grandSetAttributes[i], 0, subArray[j], 0, grandSetAttributes[0].length);
+						j++;
+					}
+					//System.out.println("j: "+j);
+				}
+				else if (subset.isBelow==true){
+					//if ( j <= subset.getCutPlace() )
+					if ( (double)grandSetAttributes[i][index].getData() <= (double)subset.attr.getData() )
+					{
+						System.arraycopy(grandSetAttributes[i], 0, subArray[j], 0, grandSetAttributes[0].length);
+						j++;
+					}
+				}
+				else{
+					System.err.println("some error with isAbove and isBelow");
+				}
+			}
+		}
 		//printing subArray for check
 		System.out.println();
 		System.out.println("Array after narrowing on index: "+index);

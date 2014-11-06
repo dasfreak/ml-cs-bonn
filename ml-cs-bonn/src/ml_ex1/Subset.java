@@ -7,6 +7,9 @@ public class Subset {
 	public int noCount;
 	public double entropy;
 	public double informationGain;
+	boolean isBelow=false;
+	boolean isAbove=false;
+	private int cutPlace;
 	
 	public Subset(Attribute attr){
 		this.attr       = attr;
@@ -15,5 +18,13 @@ public class Subset {
 		noCount         = 0;
 		entropy         = 0.0;
 		informationGain = 0.0;
+	}
+	
+	public int getCutPlace() {
+		return cutPlace;
+	}
+
+	public void setCutPlace(int cutPlace) {
+		this.cutPlace = cutPlace;
 	}
 }

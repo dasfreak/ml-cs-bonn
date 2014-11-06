@@ -72,7 +72,6 @@ public class Node {
 	            return var1.compareTo(var2);
 			}
 		});
-		
 		return attributes;
 	}
 	
@@ -81,36 +80,36 @@ public class Node {
 		int targetColumn = attributes[0].length-1;
 		Subset below ;
 		Subset above;
-		Binary belowMean;
-		Binary notBelowMean;
+		Numerical belowMean;
+		Numerical aboveMean;
 		double mean;
 		List<DisjointSets> subsets = new ArrayList<DisjointSets>();
 		
-		belowMean=new Binary();
-		belowMean.setData("yes");
-		notBelowMean=new Binary();
-		notBelowMean.setData("no");
 
-//		for (int i=0 ; i < attributes.length ;i++ )
-//		{
-//			for (int j=0; j< attributes[i].length; j++ )
-//			{
-//				System.out.print(attributes[i][j].getData()  +", ");
-//			}
-//			System.out.println("");
-//		}
 		for ( int i=0; i<attributes.length-1 ; i++ ){
 			// if two following rows differ in target data
-			if((boolean)attributes[i][targetColumn].getData() != (boolean)attributes[i+1][targetColumn].getData()){
+			if((boolean)attributes[i][targetColumn].getData() != (boolean)attributes[i+1][targetColumn].getData() && !attributes[i][index].getData().equals((Double)attributes[i+1][index].getData())){ //so split can be done if numbers are the same				
 					//do the split and calculate the entropy
 					mean = ( (double)attributes[i][index].getData() + (double)attributes[i+1][index].getData() )/2.0;
-					//Subset initial = new Subset(attributes[i][this.index]);
+					belowMean=new Numerical();
+					aboveMean=new Numerical();
 					
-					below = new Subset(belowMean);
-					above = new Subset(notBelowMean);
+					if(mean == 0.0){
+						System.out.println("index i: "+i);
+					}
+					
+					belowMean.setData(mean); //set the attribute for mean
+					below = new Subset(belowMean); //set the flat of isBelow for true
+					below.setCutPlace(i);	//keep index where set was cut
+					below.isBelow=true;
+					
+					aboveMean.setData(mean);	//set the attribute for mean
+					above = new Subset(aboveMean);
+					above.setCutPlace(i);	//keep index where set was cut
+					above.isAbove=true;
 					
 					for ( int j=0; j<attributes.length; j++){
-						//System.out.println("couter: "+j);
+						//System.out.println("counter: "+j);
 						if ( (double)attributes[j][index].getData() > mean ){
 							above.numOccurrences++;
 							if ((boolean) attributes[j][attributes[0].length-1].getData()) // target column is always boolean
@@ -126,11 +125,15 @@ public class Node {
 								below.noCount++;
 						}
 					}
+					
+					if(mean == 0.0){
+						System.out.println("above nn: "+above.numOccurrences);
+					}
+					
 					above.entropy = Entropy.calcEntropy( above.yesCount, above.noCount );
 					below.entropy = Entropy.calcEntropy( below.yesCount,  below.noCount );
 //					System.out.println("index: "+i+" numOccurencesBelow = " + below.numOccurrences + " numOccurencesHigher = "+above.numOccurrences + " mean = "+mean);
 					subsets.add(new DisjointSets( below, above, mean ) );
-					//subsetsTemp.add(above);
 			}
 		}
 		
@@ -160,14 +163,16 @@ public class Node {
 			this.entropy = maximal.entropy;
 			this.informationGain = entropyParent - entropySegment;	
 		}
-		else if (this.attribute instanceof Numerical) {
-//			System.out.println("===================SORTED ARRAY PRINT====================");
+		else if (this.attribute instanceof Numerical) {	
+			attributes=sortArray(attributes); //SORT ARRAY FIRST
+//			System.out.println("===================SORTED ARRAY PRINT==================== "+index);
 //			for (int it=0; it<attributes.length; it++){
 //				for (int jt=0; jt<attributes[0].length; jt++){
 //					System.out.print( attributes[it][jt].getData()+" , ");
 //				}
 //				System.out.println();
 //			}
+//			System.out.println("===================END SORTED ARRAY PRINT==================== "+ index);
 			
 			List<DisjointSets> subsets = extractNumericalSubsets(attributes);
 			
@@ -192,9 +197,24 @@ public class Node {
 					this.disjointSets = s;
 				}
 			}
+			
+			
+//			System.out.println("cut place 1 is: "+disjointSets.set1.getCutPlace());
+//			System.out.println("cut place 2 is: "+disjointSets.set2.getCutPlace());
+//			System.out.println("occurencies of set 1: "+disjointSets.set1.numOccurrences);
+//			System.out.println("occurencies of set 2: "+disjointSets.set2.numOccurrences);
+//			System.out.println("mean is: "+disjointSets.set2.attr.getData());
+			
 			this.informationGain  = maxInformationGain;
-			this.entropy = this.disjointSets.entropySubsets;
-			this.maximal = this.disjointSets.set1;
+			double max1=0;
+			if(this.disjointSets.set1.entropy>this.disjointSets.set2.entropy){
+				this.entropy = this.disjointSets.set1.entropy;
+				this.maximal = this.disjointSets.set1;
+			}
+			else{
+				this.entropy = this.disjointSets.set2.entropy;
+				this.maximal = this.disjointSets.set2;
+			}
 		}
 		else{
 			System.out.println("some error");
