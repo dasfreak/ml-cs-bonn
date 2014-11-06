@@ -15,6 +15,12 @@ public class Entropy {
 		double all=first_set+second_set;
 		double var1;
 		double var2;
+		
+		if (first_set == 0 && second_set == 0 )
+		{
+			return 0;
+		}
+		
 		if (first_set==0)
 			var1=0;
 		else

@@ -17,7 +17,8 @@ public class Node {
 	public ArrayList<Node> children;
     public Node parent=null;
     public Subset maximal = null;
-    public List<Subset> subsets; 
+    public List<Subset> subsets;
+	private DisjointSets disjointSets; 
     
 	
 	//do not know yet if class_name is necessary here, we will see later on
@@ -125,6 +126,8 @@ public class Node {
 								below.noCount++;
 						}
 					}
+					above.entropy = Entropy.calcEntropy( above.yesCount, above.noCount );
+					below.entropy = Entropy.calcEntropy( below.yesCount,  below.noCount );
 //					System.out.println("index: "+i+" numOccurencesBelow = " + below.numOccurrences + " numOccurencesHigher = "+above.numOccurrences + " mean = "+mean);
 					subsets.add(new DisjointSets( below, above, mean ) );
 					//subsetsTemp.add(above);
@@ -138,12 +141,12 @@ public class Node {
 		if (this.attribute instanceof Categorical || this.attribute instanceof Binary ){
 			extractSubsets(attributes);		
 			
+			// :TODO: Marek: is this calculation correct we need the maximum information gain and not the maximal entropy !!
 			double entropySegment = 0;
 			for ( Subset s : subsets) {
 				double segmentSize = s.yesCount + s.noCount;
 				s.entropy = Entropy.calcEntropy(s.yesCount, s.noCount);
 				entropySegment += ((double)segmentSize/(double)range)*s.entropy;
-
 			}
 					
 			double maxSubsetEntropy = 0;
@@ -154,30 +157,44 @@ public class Node {
 					this.maximal          = s;
 				}
 			}
-			this.entropy=maximal.entropy;
+			this.entropy = maximal.entropy;
 			this.informationGain = entropyParent - entropySegment;	
 		}
 		else if (this.attribute instanceof Numerical) {
-			attributes=sortArray(attributes);
-			System.out.println("===================SORTED ARRAY PRINT====================");
-			for (int it=0; it<attributes.length; it++){
-				for (int jt=0; jt<attributes[0].length; jt++){
-					System.out.print( attributes[it][jt].getData()+" , ");
-				}
-				System.out.println();
-			}
+//			System.out.println("===================SORTED ARRAY PRINT====================");
+//			for (int it=0; it<attributes.length; it++){
+//				for (int jt=0; jt<attributes[0].length; jt++){
+//					System.out.print( attributes[it][jt].getData()+" , ");
+//				}
+//				System.out.println();
+//			}
 			
 			List<DisjointSets> subsets = extractNumericalSubsets(attributes);
-			System.out.println("=============");
 			
+//			System.out.println("=============");
 			for ( DisjointSets s : subsets ) {
-				System.out.println("mean = "+s.mean+ ", set1 num occurences = "+ s.set1.numOccurrences + 
-						", set1 yesCount = " + s.set1.yesCount + ", set1 noCount = "+s.set1.noCount+
-						", set2 num occurences = "+ s.set2.numOccurrences + 
-						", set2 yesCount = " + s.set2.yesCount + ", set2 noCount = "+s.set2.noCount );
+				// assuming range is the father entropy
+				s.entropySubsets = s.set1.entropy * ( (double)s.set1.numOccurrences / (double)(range) ) +
+						s.set2.entropy * ( (double)s.set2.numOccurrences / (double)(range) );
+				s.informationGain = entropyParent - s.entropySubsets;
+//				System.out.println("mean = "+s.mean+ ", set1 Entropy = "+s.set1.entropy + ", set1 num occurences = "+ s.set1.numOccurrences + 
+//						", set1 yesCount = " + s.set1.yesCount + ", set1 noCount = "+s.set1.noCount+
+//						", set2 Entropy = "+s.set2.entropy +
+//						", set2 num occurences = "+ s.set2.numOccurrences + 
+//						", set2 yesCount = " + s.set2.yesCount + ", set2 noCount = "+s.set2.noCount );
 			}
 			
-			System.exit(0);
+			double maxInformationGain = 0;
+			for ( DisjointSets s : subsets) {
+				if ( s.informationGain > maxInformationGain )
+				{
+					maxInformationGain = s.informationGain;
+					this.disjointSets = s;
+				}
+			}
+			this.informationGain  = maxInformationGain;
+			this.entropy = this.disjointSets.entropySubsets;
+			this.maximal = this.disjointSets.set1;
 		}
 		else{
 			System.out.println("some error");

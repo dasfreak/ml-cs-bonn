@@ -1,8 +1,5 @@
 package ml_ex1;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class TdidtAlgo {
 
@@ -92,8 +89,6 @@ public class TdidtAlgo {
 
 			attributes = getSubsetOfTable( attributes, nodeHighestEntropy.index, nodeHighestEntropy.maximal );
 		}
-		
-		
 
 	}
 
