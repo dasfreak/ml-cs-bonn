@@ -141,7 +141,7 @@ public class Node {
 	}
 	
 	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range) {	
-		if (this.attribute instanceof Categorical || this.attribute instanceof Binary ){
+		if (this.attribute instanceof Categorical || this.attribute instanceof Binary ){ //FOR CATEGORICAL AND BINARY
 			extractSubsets(attributes);		
 			
 			// :TODO: Marek: is this calculation correct we need the maximum information gain and not the maximal entropy !!
@@ -151,7 +151,12 @@ public class Node {
 				s.entropy = Entropy.calcEntropy(s.yesCount, s.noCount);
 				entropySegment += ((double)segmentSize/(double)range)*s.entropy;
 			}
-					
+			
+			this.informationGain = entropyParent - entropySegment;	
+			
+			
+			
+			// TODO: change that
 			double maxSubsetEntropy = 0;
 			for ( Subset s : subsets) {
 				if ( s.entropy > maxSubsetEntropy )
@@ -161,10 +166,11 @@ public class Node {
 				}
 			}
 			this.entropy = maximal.entropy;
-			this.informationGain = entropyParent - entropySegment;	
+			
 		}
-		else if (this.attribute instanceof Numerical) {	
+		else if (this.attribute instanceof Numerical) {	//FOR NUMERICAL
 			attributes=sortArray(attributes); //SORT ARRAY FIRST
+					
 //			System.out.println("===================SORTED ARRAY PRINT==================== "+index);
 //			for (int it=0; it<attributes.length; it++){
 //				for (int jt=0; jt<attributes[0].length; jt++){
@@ -173,6 +179,7 @@ public class Node {
 //				System.out.println();
 //			}
 //			System.out.println("===================END SORTED ARRAY PRINT==================== "+ index);
+			
 			
 			List<DisjointSets> subsets = extractNumericalSubsets(attributes);
 			
@@ -197,7 +204,7 @@ public class Node {
 					this.disjointSets = s;
 				}
 			}
-			
+			this.informationGain  = maxInformationGain;
 			
 //			System.out.println("cut place 1 is: "+disjointSets.set1.getCutPlace());
 //			System.out.println("cut place 2 is: "+disjointSets.set2.getCutPlace());
@@ -205,7 +212,10 @@ public class Node {
 //			System.out.println("occurencies of set 2: "+disjointSets.set2.numOccurrences);
 //			System.out.println("mean is: "+disjointSets.set2.attr.getData());
 			
-			this.informationGain  = maxInformationGain;
+			
+			
+			
+			// TODO: change that
 			double max1=0;
 			if(this.disjointSets.set1.entropy>this.disjointSets.set2.entropy){
 				this.entropy = this.disjointSets.set1.entropy;
