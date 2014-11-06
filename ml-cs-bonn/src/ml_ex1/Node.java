@@ -75,58 +75,63 @@ public class Node {
 		return attributes;
 	}
 	
-	public List<Subset> extractNumericalSubsets(Attribute[][] attributes, List<Subset> subsetsTemp){
+	public List<Subset> extractNumericalSubsets( Attribute[][] attributes ){
 		
-		int targetColumn=attributes[0].length-1;
+		int targetColumn = attributes[0].length-1;
 		Subset below ;
 		Subset above;
 		Binary belowMean;
 		Binary notBelowMean;
 		double mean;
+		List<Subset> subsets = new ArrayList<Subset>();
 		
-		for (int i=0; i<attributes.length-1 ; i++){
-			
+		belowMean=new Binary();
+		belowMean.setData("yes");
+		notBelowMean=new Binary();
+		notBelowMean.setData("no");
+
+//		for (int i=0 ; i < attributes.length ;i++ )
+//		{
+//			for (int j=0; j< attributes[i].length; j++ )
+//			{
+//				System.out.print(attributes[i][j].getData()  +", ");
+//			}
+//			System.out.println("");
+//		}
+		for ( int i=0; i<attributes.length-1 ; i++ ){
 			// if two following rows differ in target data
 			if((boolean)attributes[i][targetColumn].getData() != (boolean)attributes[i+1][targetColumn].getData()){
 					//do the split and calculate the entropy
-					mean = ((Double)attributes[i][index].getData() + (Double)attributes[i+1][index].getData())/2.0;
+					mean = ( (double)attributes[i][index].getData() + (double)attributes[i+1][index].getData() )/2.0;
 					//Subset initial = new Subset(attributes[i][this.index]);
-					belowMean=new Binary();
-					belowMean.setData("yes");
-					notBelowMean=new Binary();
-					notBelowMean.setData("no");
 					
 					below = new Subset(belowMean);
 					above = new Subset(notBelowMean);
 					
-					for (int j=0; j<attributes.length ; j++){
+					for ( int j=0; j<attributes.length; j++){
 						//System.out.println("couter: "+j);
-						if ((Double)attributes[j][index].getData() > mean ){
+						if ( (double)attributes[j][index].getData() > mean ){
 							above.numOccurrences++;
 							if ((boolean) attributes[j][attributes[0].length-1].getData()) // target column is always boolean
 								above.yesCount++;
 							else
 								above.noCount++;
 						}
-						else if ((Double)attributes[j][index].getData() <= mean ){
+						else {
 							below.numOccurrences++;
 							if ((boolean) attributes[j][attributes[0].length-1].getData()) // target column is always boolean
 								below.yesCount++;
 							else
 								below.noCount++;
 						}
-						else
-						{
-							System.out.println("here");
-						}
 					}
-					System.out.println("index: "+i);
-					subsetsTemp.add(below);
+//					System.out.println("index: "+i+" numOccurencesBelow = " + below.numOccurrences + " numOccurencesHigher = "+above.numOccurrences + " mean = "+mean);
+					subsets.add(below);
 					//subsetsTemp.add(above);
 			}
 		}
 		
-		return subsetsTemp;
+		return subsets;
 	}
 	
 	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range) {	
@@ -153,25 +158,23 @@ public class Node {
 			this.informationGain = entropyParent - entropySegment;	
 		}
 		else if (this.attribute instanceof Numerical) {
-//			attributes=sortArray(attributes);
-//			System.out.println("===================SORTED ARRAY PRINT====================");
-//			for (int it=0; it<attributes.length; it++){
-//				for (int jt=0; jt<attributes[0].length; jt++){
-//					System.out.print( attributes[it][jt].getData()+" , ");
-//				}
-//				System.out.println();
-//			}
+			attributes=sortArray(attributes);
+			System.out.println("===================SORTED ARRAY PRINT====================");
+			for (int it=0; it<attributes.length; it++){
+				for (int jt=0; jt<attributes[0].length; jt++){
+					System.out.print( attributes[it][jt].getData()+" , ");
+				}
+				System.out.println();
+			}
 			
-//			List<Subset> subsetsTemp  = new ArrayList<Subset>();
-//			subsetsTemp=extractNumericalSubsets(attributes , subsetsTemp);
-//			
-//			System.out.println("=============");
-//			for (int i=0; i <subsetsTemp.size(); i++){
-//				System.out.println(subsetsTemp.get(i).numOccurrences);
-//				
-//			}
-//			
-//			System.exit(0);
+			List<Subset> subsets = extractNumericalSubsets(attributes);
+			System.out.println("=============");
+			
+			for ( Subset s : subsets ) {
+				System.out.println(s.numOccurrences +" yesCount = " + s.yesCount + " noCount = "+s.noCount);
+			}
+			
+			System.exit(0);
 		}
 		else{
 			System.out.println("some error");
