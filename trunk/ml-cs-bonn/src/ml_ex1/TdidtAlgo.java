@@ -60,7 +60,9 @@ public class TdidtAlgo {
 		
 		for ( int j = 0; j < FileReader.pattern1.length-1; j++ )
 		{
+			System.out.println();
 			System.out.println("Itteration of the main loop: "+j);
+			System.out.println("Parent entropy: " + parent.entropy);
 			highestInformationGain=0.0;
 			for ( int i = 0; i < columns.length; i++ ){
 				if ( null == columns[i] )
@@ -71,19 +73,15 @@ public class TdidtAlgo {
 				parent.children.add(currentNode);
 				
 				//System.out.println( currentNode.parent.entropy);
-				currentNode.calculateInformationGain( attributes, currentNode.parent.entropy, attributes.length ); //calculate entropy for temporary node
-				
+				currentNode.calculateInformationGain( attributes, currentNode.parent.entropy, attributes.length, j, i ); //calculate entropy for temporary node
+				System.out.println("current information gain: " +currentNode.informationGain+" for index: "+i);
 				if ( currentNode.informationGain > highestInformationGain ){ //check if old one is greater than new one (looking for maximum entropy)
 					nodeHighestEntropy = currentNode; //if greater save node with maximum entropy to nodeHighestEntropy
-					System.out.println("current node index:"+ currentNode.index+" i:"+i);
 					highestInformationGain = currentNode.informationGain;
 				}
 			}
-			System.out.println("index "+ nodeHighestEntropy.index);
+			System.out.println("Attribute selected as a node with index "+ nodeHighestEntropy.index);
 			columns[nodeHighestEntropy.index] = null; // done with this column
-			//copy columns once again
-//			columns = new String[FileReader.pattern1.length -1];
-//			System.arraycopy(FileReader.nodesNames, 0, columns, 0, FileReader.pattern1.length - 1 );
 			
 			parent = nodeHighestEntropy;
 
@@ -108,12 +106,14 @@ public class TdidtAlgo {
 		}
 		
 		//printing subArray for check
-//		for (int it=0; it<subArray.length; it++){
-//			for (int jt=0; jt<subArray[0].length; jt++){
-//				System.out.print( subArray[it][jt].getData()+" , ");
-//			}
-//			System.out.println();
-//		}
+		System.out.println();
+		System.out.println("Array after narrowing on index: "+index);
+		for (int it=0; it<subArray.length; it++){
+			for (int jt=0; jt<subArray[0].length; jt++){
+				System.out.print( subArray[it][jt].getData()+" , ");
+			}
+			System.out.println();
+		}
 		
 		return subArray;
 	}
