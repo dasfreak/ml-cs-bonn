@@ -1,16 +1,16 @@
 package ml_ex1;
 
 public class Subset {
-	public int numOccurrences; 
+	public int       numOccurrences; 
 	public Attribute attr;
-	public int yesCount;
-	public int noCount;
-	public double entropy;
-	public double informationGain;
-	boolean isBelow=false;
-	boolean isAbove=false;
-	private int cutPlace;
-	public boolean finalResult;
+	public int       yesCount;
+	public int       noCount;
+	public double    entropy;
+	public double    informationGain;
+	boolean          isBelow = false;
+	boolean          isAbove = false;
+	private int      cutPlace;
+	public boolean   finalResult;
 	
 	
 	public Subset(Attribute attr){

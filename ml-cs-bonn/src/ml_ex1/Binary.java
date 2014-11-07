@@ -14,7 +14,6 @@ public class Binary extends Attribute<Boolean> {
 	}
 
 	public Boolean getData() {
-		//System.out.println(data);
 		return data;
 	}
 }
