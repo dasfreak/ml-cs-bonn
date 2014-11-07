@@ -22,7 +22,7 @@ public class Node {
 	public ArrayList<Node> children;
     public Node parent=null;
     public List<Subset> subsets;
-	private DisjointSets disjointSets; 
+	//private DisjointSets disjointSets; 
     
 	
 	//do not know yet if class_name is necessary here, we will see later on
@@ -37,54 +37,54 @@ public class Node {
 		nodeCounter++;
 	}
 	
-//	public String toString(){
-//		 
-//		String str = "";
-//		String test="";
-//		String children = "";
-//		if ( maximal.attr instanceof Binary )
-//		{
-//			test = FileReader.nodesNames[this.index];
-//		}
-//		else if ( maximal.attr instanceof Categorical )
-//		{
-//			test = FileReader.nodesNames[this.index] +" in {";
-//			this.subsets.sort( new Comparator<Subset>() {
-//
-//				public int compare(Subset o1, Subset o2) {
-//					return ((String)o1.attr.getData()).compareTo((String)o2.attr.getData());
-//				}
-//				});
-//			for ( Subset s: this.subsets)
-//			{
-//				if ( this.subsets.get(this.subsets.size()-1) == s )
-//				{
-//					test += s.attr.getData();
-//				}
-//				else
-//				{
-//					test += s.attr.getData() +",";
-//				}
-//			}
-//			test +="}";
-//		}
-//		
-//		else if ( maximal.attr instanceof Numerical )
-//		{
-//			test = FileReader.nodesNames[this.index]+" < " + maximal.attr.getData();
-//		}
-//		
-//		for ( Node n : this.children )
-//		{
-//			children += " "+n.nodeNum;
-//		}
-//		str += nodeNum + " "+test+children;
-//		for ( Node n : this.children)
-//		{
-//			str += "\n"+n.toString();
-//		}
-//		return str;
-//	}
+	public String toString(){
+		 
+		String str = "";
+		String test="";
+		String children = "";
+		if ( attribute instanceof Binary )
+		{
+			test = FileReader.nodesNames[this.index];
+		}
+		else if ( attribute instanceof Categorical )
+		{
+			test = FileReader.nodesNames[this.index] +" in {";
+			this.subsets.sort( new Comparator<Subset>() {
+
+				public int compare(Subset o1, Subset o2) {
+					return ((String)o1.attr.getData()).compareTo((String)o2.attr.getData());
+				}
+				});
+			for ( Subset s: this.subsets)
+			{
+				if ( this.subsets.get(this.subsets.size()-1) == s )
+				{
+					test += s.attr.getData();
+				}
+				else
+				{
+					test += s.attr.getData() +",";
+				}
+			}
+			test +="}";
+		}
+		
+		else if ( attribute instanceof Numerical )
+		{
+			test = FileReader.nodesNames[this.index]+" < " + attribute.getData();
+		}
+		
+		for ( Node n : this.children )
+		{
+			children += " "+n.nodeNum;
+		}
+		str += nodeNum + " "+test+children;
+		for ( Node n : this.children)
+		{
+			str += "\n"+n.toString();
+		}
+		return str;
+	}
 	
 	
 	/* extracts segments for certain data column and saves this segment into segments list */
