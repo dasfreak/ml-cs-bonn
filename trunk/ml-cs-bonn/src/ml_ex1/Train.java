@@ -2,7 +2,7 @@ package ml_ex1;
 
 public class Train {
 	
-	public static final boolean PRINT_TABLE = false;
+	public static final boolean PRINT_TABLE = true;
 
 	public static void main(String[] args)  {
 		int numHits   = 0;
@@ -13,8 +13,10 @@ public class Train {
 		for (int i=0; i<InputReader.getTestSet().getData().length; i++ )
 		{
 			Attribute[] row = InputReader.getTestSet().getData()[i];
+//			System.out.println("row[0] = "+row[0].getData());
 			boolean answer = algo.runExample( algo.getRoot(), row );
-			if ( answer == (boolean)row[row.length-1].getData() )
+//			System.out.println(" <=== runExample");
+			if ( answer == (boolean)(row[row.length-1].getData()) )
 			{
 				numHits++;
 			}
@@ -23,7 +25,7 @@ public class Train {
 				numMisses++;
 			}
 		}
-		System.out.println("NumHits = "+numHits+" NumMisses = "+numMisses);
+//		System.out.println("NumHits = "+numHits+" NumMisses = "+numMisses);
 		
 		algo.saveToFile();
 	}

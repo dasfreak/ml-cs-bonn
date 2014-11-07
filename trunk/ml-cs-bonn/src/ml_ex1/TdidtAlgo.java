@@ -358,7 +358,7 @@ public class TdidtAlgo {
 	}
 
 	public boolean runExample( Node node, Attribute[] row ) {
-		
+//		System.out.println(" ==> runExample");
 		if ( node.getChildren().isEmpty() ) // got to a leaf - recursion is over
 		{
 			if ( row[node.index] instanceof Binary  )
@@ -373,8 +373,8 @@ public class TdidtAlgo {
 		if ( node.attribute instanceof Numerical )
 		{
 			double value = (double)row[node.index].getData();
-			double meanValue = (double)node.attribute.getData();
-			if ( value < meanValue )//(double)row[node.index].getData() < (double)( ) )
+			double meanValue = (double)(node.subsets.get(node.numericalSubset1)).attr.getData();
+			if ( value < meanValue )
 			{
 				return runExample( node.getChildren().get(0), row );
 			}
@@ -383,7 +383,7 @@ public class TdidtAlgo {
 				return runExample( node.getChildren().get(1), row );
 			}
 		}
-		if ( node.attribute instanceof Categorical || node.attribute instanceof Binary )
+		else if ( node.attribute instanceof Categorical || node.attribute instanceof Binary )
 		{
 			for ( Subset s : node.subsets )
 			{
@@ -391,11 +391,8 @@ public class TdidtAlgo {
 				{
 					return runExample( node.getChildren().get(0), row );
 				}
-				else
-				{
-					return runExample( node.getChildren().get(1), row );
-				}
 			}
+			return runExample( node.getChildren().get(1), row );
 		}
 		return false;
 	}
