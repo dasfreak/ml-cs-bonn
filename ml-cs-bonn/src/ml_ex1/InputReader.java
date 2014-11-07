@@ -13,7 +13,9 @@ public class InputReader {
 	      if( trainingSet == null) {
 	    	 // uncomment this to use whole training set
 	    	 //  trainingSet = new FileReader("data_exercise_1.csv");
+	    	// trainingSet = new FileReader("training_set.csv");
 	    	  trainingSet = new FileReader("training_set.csv");
+
 	      }
 	      return trainingSet;
 	}

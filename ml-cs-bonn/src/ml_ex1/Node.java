@@ -80,9 +80,13 @@ public class Node {
 			test = InputReader.getInstance().getNodesNames()[this.index]+" < " + this.subsets.get(this.numericalSubset1).attr.getData();
 		}
 		
-		if ( this.getChildren().isEmpty() )
+		if ( attribute instanceof Binary && this.getChildren().isEmpty() )
 		{
-			result = " "+(this.parent.finalResult ? "yes" : "no" );
+			result = " "+(((Binary)this.attribute).data ? "yes" : "no" );
+		}
+		else if ( this.getChildren().isEmpty() )
+		{
+			result = " "+( this.parent.finalResult ? "yes" : "no" );
 		}
 		
 		for ( Node n : this.children )
@@ -244,7 +248,7 @@ public class Node {
 		}
 		else if (this.attribute instanceof Numerical) {	//FOR NUMERICAL
 			
-			List<Double> temporaryInformationGain=new ArrayList<Double>();
+			List<Double> temporaryInformationGain = new ArrayList<Double>();
 			
 			// check what is the information gain for each split and save it in the temporaryInformationGain arraylist
 			double entropySubsets;
