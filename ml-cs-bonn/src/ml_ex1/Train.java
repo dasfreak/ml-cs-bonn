@@ -13,5 +13,7 @@ public class Train {
 		System.out.println();
 
 	//	algo.runExample(row);
+		
+		algo.saveToFile();
 	}
 }
