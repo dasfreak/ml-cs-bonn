@@ -113,8 +113,12 @@ public class TdidtAlgo {
 				else{
 					parentSubset.finalResult=true;
 					System.out.println(parentSubset.finalResult);
-				}	
+				}
+				
 				System.out.println();
+				Attribute t = new Binary();
+			    t.setData( parentSubset.finalResult ? "yes" : "no");
+				parentNode.addChild(new Node(0, t, DataStructureSingleton.getNodeNames()[parentNode.index], parentNode));
 				continue;
 			}
 			

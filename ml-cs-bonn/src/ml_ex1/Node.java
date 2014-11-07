@@ -46,6 +46,7 @@ public class Node {
 	public String toString(){
 		 
 		String str = "";
+		String result ="";
 		String test="";
 		String children = "";
 		if ( attribute instanceof Binary )
@@ -74,17 +75,21 @@ public class Node {
 			}
 			test +="}";
 		}
-		
 		else if ( attribute instanceof Numerical )
 		{
 			test = FileReader.nodesNames[this.index]+" < " + attribute.getData();
+		}
+		
+		if ( this.getChildren().isEmpty() )
+		{
+			result = " "+( (Boolean)this.attribute.getData() ? "yes" : "no" );
 		}
 		
 		for ( Node n : this.children )
 		{
 			children += " "+n.nodeNum;
 		}
-		str += nodeNum + " "+test+children;
+		str += nodeNum + result +" "+test+children;
 		for ( Node n : this.children)
 		{
 			str += "\n"+n.toString();
