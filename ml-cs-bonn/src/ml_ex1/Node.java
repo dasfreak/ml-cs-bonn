@@ -82,7 +82,6 @@ public class Node {
 		
 		if ( this.getChildren().isEmpty() )
 		{
-			
 			result = " "+(this.parent.finalResult ? "yes" : "no" );
 		}
 		

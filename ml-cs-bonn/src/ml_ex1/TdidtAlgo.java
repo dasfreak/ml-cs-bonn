@@ -320,6 +320,7 @@ public class TdidtAlgo {
 			subArrayConv[l++] = arr;
 		}
 
+		if ( Train.PRINT_TABLE )
 		for (int it = 0; it < subArrayConv.length; it++) {
 			for (int jt = 0; jt < subArrayConv[0].length; jt++) {
 				System.out.print(subArrayConv[it][jt].getData());
@@ -338,5 +339,18 @@ public class TdidtAlgo {
 		System.out.println(" ======== Tree Printing Began ========");
 		System.out.println(tree);
 		System.out.println(" ======== Tree Printing Ended ========");
+	}
+
+	public boolean runExample( Node node, Attribute[] row ) {		
+		if ( node.getChildren().isEmpty() ) // got to a leaf - recursion is over
+		{
+			return node.parent.finalResult;
+		}
+			if ( row[node.index].getData() instanceof Numerical )
+		{
+			
+		}
+		return false;
+		
 	}
 }
