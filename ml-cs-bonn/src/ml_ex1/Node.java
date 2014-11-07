@@ -15,8 +15,8 @@ public class Node {
 	public int numRecords;
 	public double informationGain;
 	public Attribute attribute; //attribute of the node
-	public int numericalSubset1;
-	public int numericalSubset2;
+	public int numericalSubset1=0;
+	public int numericalSubset2=0;
 	
 	
 	private ArrayList<Node> children;
@@ -233,6 +233,8 @@ public class Node {
 				entropySubsets += ((double)segmentSize/(double)range)*s.entropy;
 			}
 			
+			//System.out.println(entropyParent);
+			//System.out.println(entropySubsets);
 			this.informationGain = entropyParent - entropySubsets;	
 		}
 		else if (this.attribute instanceof Numerical) {	//FOR NUMERICAL
@@ -257,15 +259,19 @@ public class Node {
 					numericalSubset1=j*2+1; //as they are in one dimensional arraylist
 				}
 			}
+			if (numericalSubset1>0 && numericalSubset2>0){
+				Subset temp1=subsets.get(numericalSubset1);
+				Subset temp2=subsets.get(numericalSubset2);
+				
+				subsets=new ArrayList<Subset>();
+				subsets.add(temp1);
+				subsets.add(temp2);
+				this.informationGain  = maxInformationGain;  //set information gain
+			}
+			else{
+				this.informationGain=0;
+			}
 			
-			Subset temp1=subsets.get(numericalSubset1);
-			Subset temp2=subsets.get(numericalSubset2);
-			
-			subsets=new ArrayList<Subset>();
-			subsets.add(temp1);
-			subsets.add(temp2);
-			
-			this.informationGain  = maxInformationGain;  //set information gain
 		}
 		else{
 			System.err.println("some error");

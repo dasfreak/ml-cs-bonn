@@ -12,7 +12,6 @@ public class TdidtAlgo {
 	private int     yesCount;
 	private int     noCount;
 	private int     numRecords;
-	private String[] columns;
 	
 	public  TdidtAlgo()
 	{
@@ -22,7 +21,14 @@ public class TdidtAlgo {
 		// set the root node
 		Attribute[][] attributes = DataStructureSingleton.getInstance1();
 		initTree(); //initialize tree
-		buildWholeTree(this.tree.root , attributes , this.targetEntropy, range ); //build the tree for the rest of nodes
+		
+		String[] columns = new String[FileReader.pattern1.length -1]; //set 
+		System.arraycopy(FileReader.nodesNames, 0, columns, 0, FileReader.pattern1.length - 1 );
+		columns[tree.root.index] = null; // done with this column as it is the root one, it will not be used in further tree
+		
+		//parent - to add somewhere
+		buildWholeTree(this.tree.root , attributes ,  range,  columns); //build the tree for the rest of nodes
+		
 	}
 	
 	/*calculating entropy of the target column*/
@@ -40,7 +46,6 @@ public class TdidtAlgo {
 		}
 		
 		numRecords = yesCount + noCount; //calculating all records
-		
 		return Entropy.calcEntropy(yesCount, noCount);
 	}
 	
@@ -54,9 +59,6 @@ public class TdidtAlgo {
 		Node target = new Node( trgColumn, DataStructureSingleton.getPattern1()[trgColumn], DataStructureSingleton.getNodeNames()[trgColumn], null );
 		target.entropy=calculateTargetEntropy(attributes); //calculate entropy of the target column for a start
 		this.targetEntropy=target.entropy;
-		
-		columns = new String[FileReader.pattern1.length -1]; //set 
-		System.arraycopy(FileReader.nodesNames, 0, columns, 0, FileReader.pattern1.length - 1 );
 		
 		double highestInformationGain=0.0;
 		Node nodeHighestEntropy = null;
@@ -74,60 +76,85 @@ public class TdidtAlgo {
 		}
 		
 		System.out.println("ROOT a node with index "+ nodeHighestEntropy.index);
-		columns[nodeHighestEntropy.index] = null; // done with this column as it is the root one, it will not be used in further tree
-			
+		
 		this.tree = new Tree( nodeHighestEntropy );	//initialize tree with the final root node
+		
+		System.out.println("Information gain: "+nodeHighestEntropy.informationGain);
+		
 	}
 	
 	
 	/** build the whole tree, for the first call the data are  (tree.root , attributes , targetEntropy, range) **/
-	void buildWholeTree(Node parentNode, Attribute[][] attributes , double entropy, double range ){
+	void buildWholeTree(Node parentNode, Attribute[][] attributes ,  double range,  String[] columnsLeft){
+		System.out.println();
+		System.out.println("NEW ENTRY INTO FUNCTION BUILD-TREE() -----------------------------------------");
+		System.out.println();
+		
 		
 		Node newNode=null;
 		Attribute[][] newAttributes;
+		String[] newColumnsLeft = new String[columnsLeft.length];
 		
 		for (Subset parentSubset : parentNode.subsets){ //iterate over all subsets for parent node and check which node should be inserted after that
-			double highestInformationGain=0.0;
-			Node nodeHighestInformationGain = null;
-			for (int j=0; j<columns.length; j++){ //for each attribute which was not used until now
-				if ( null == columns[j] )
-				{
-					continue;
-				}
-				newNode = new Node(j, DataStructureSingleton.getPattern1()[j], DataStructureSingleton.getNodeNames()[j], parentNode); //create new node if it was not used before
-				newNode.getAllSubsets(attributes); //extract the subsets for the new node
-				newNode.calculateInformationGain( attributes, parentSubset.entropy, attributes.length); //calculate information gain
+					//narrow down the values in array according for selected subset
+					newAttributes = getSubsetOfTable( attributes, parentNode.index , parentSubset );
+					System.arraycopy(columnsLeft, 0, newColumnsLeft, 0, columnsLeft.length);
+					
+					System.out.println("now we are considering subset: "+parentSubset.attr.getData()); 
+					
+					double highestInformationGain=0.0;
+					Node nodeHighestInformationGain = null;
+					
+					// if entropy equals 0 for the subset it means we have YES or NO. We save it into the variable of subset and go further
+					if (parentSubset.entropy==0){
+						System.out.print(parentSubset.attr.getData() +" ");
+						if(parentSubset.noCount>0){
+							parentSubset.finalResult=false;
+							System.out.println(parentSubset.finalResult);
+						}
+						else{
+							parentSubset.finalResult=true;
+							System.out.println(parentSubset.finalResult);
+						}	
+						continue;
+					}
+					
+					for (int j=0; j<newColumnsLeft.length; j++){ //for each attribute which was not used until now
+								if ( null == newColumnsLeft[j] ){
+									continue;
+								}
 				
-				// check which node we should add so that information gain in reference to parent subset is the highest
-				if ( newNode.informationGain > highestInformationGain ){ //check if old one is greater than new one (looking for maximum entropy)
-					nodeHighestInformationGain = newNode; //if greater save node with maximum entropy to nodeHighestEntropy
-					highestInformationGain = newNode.informationGain;
-				}
-			}
-			
-			// if we arrived here that means that we check what node should be added for certain subset and now we add it
-			if ( nodeHighestInformationGain == null )
-			{
-				continue;
-			}
-			
-			parentNode.addChild(nodeHighestInformationGain);
-
-//			if ( nodeHighestEntropy == null )
-//			{
-//				System.out.println(" hey ");
-//			}
-//			System.out.println(nodeHighestEntropy.index);
-//			System.out.println("For node with index: "+parentNode.index+"  For the subset: "+parentSubset.attr.getData()+"	, the following node was ascribed "+ nodeHighestEntropy.index);
-			
-			// ?????????????????
-			columns[nodeHighestInformationGain.index] = null; // done with this column
-			// ?????????????????
-			
-			newAttributes = getSubsetOfTable( attributes, parentNode.index, parentSubset );
-			
-			//execute recursively
-			buildWholeTree(nodeHighestInformationGain, newAttributes, nodeHighestInformationGain.entropy, newAttributes.length ); 
+								newNode = new Node(j, DataStructureSingleton.getPattern1()[j], DataStructureSingleton.getNodeNames()[j], parentNode); //create new node if it was not used before
+								System.out.println("for column: "+newNode.index);
+								
+								newNode.getAllSubsets(newAttributes); //extract the subsets for the new node
+								newNode.calculateInformationGain( newAttributes, parentSubset.entropy, newAttributes.length); //calculate information gain
+								System.out.println("particular information gain is: "+newNode.informationGain);
+								System.out.println("range passed to gain is: "+newAttributes.length);
+								System.out.println("");
+								
+								
+								// check which node we should add so that information gain in reference to parent subset is the highest
+								if ( newNode.informationGain > highestInformationGain ){ //check if old one is greater than new one (looking for maximum entropy)
+									nodeHighestInformationGain = newNode; //if greater save node with maximum entropy to nodeHighestEntropy
+									highestInformationGain = newNode.informationGain;
+								}
+					}
+					
+					// if we arrived here that means that we check what node should be added for certain subset and now we add it
+					if ( nodeHighestInformationGain == null ){
+						System.out.println("nodeHighest is null ");
+						continue;
+					}
+					else{
+						System.out.println(nodeHighestInformationGain.informationGain);
+					}
+						
+					parentNode.addChild(nodeHighestInformationGain);
+					newColumnsLeft[nodeHighestInformationGain.index] = null; // done with this column
+							
+					//execute recursively
+					buildWholeTree(nodeHighestInformationGain, newAttributes, newAttributes.length, newColumnsLeft ); 
 		}
 	}
 
@@ -139,7 +166,7 @@ public class TdidtAlgo {
 //		Attribute[][] subArray = new Attribute[subset.numOccurrences][grandSetAttributes[0].length];
 		ArrayList<Attribute[]> subArray = new ArrayList<Attribute[]>();
 		
-		System.out.println("number of occurencies fo subset: "+subset.numOccurrences);
+		//System.out.println("number of occurencies fo subset: "+subset.numOccurrences);
 		int j = 0;
 		
 		if(subset.attr instanceof Categorical || subset.attr instanceof Binary){ //create array for categorical or binary comparison
@@ -194,6 +221,8 @@ public class TdidtAlgo {
 			System.out.println();
 		}
 		
+		System.out.println();
+		System.out.println();
 		return subArrayConv;
 	}
 

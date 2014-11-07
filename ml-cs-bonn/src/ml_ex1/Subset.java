@@ -10,6 +10,8 @@ public class Subset {
 	boolean isBelow=false;
 	boolean isAbove=false;
 	private int cutPlace;
+	public boolean finalResult;
+	
 	
 	public Subset(Attribute attr){
 		this.attr       = attr;
