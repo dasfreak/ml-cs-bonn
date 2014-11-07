@@ -110,7 +110,8 @@ public class TdidtAlgo {
 			{
 				continue;
 			}
-			parentNode.children.add(nodeHighestInformationGain);
+			
+			parentNode.addChild(nodeHighestInformationGain);
 
 //			if ( nodeHighestEntropy == null )
 //			{
