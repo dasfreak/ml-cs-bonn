@@ -13,7 +13,10 @@ public class DataStructureSingleton {
 	
 	public static FileReader getInstance1() {
 	      if( trainingSet == null) {
-	    	  trainingSet = new FileReader("data_exercise_1.csv");
+	    	 // uncomment this to use whole training set
+	    	 //  trainingSet = new FileReader("data_exercise_1.csv");
+	    	  trainingSet = new FileReader("training_set.csv");
+	    	  testSet     = new FileReader("test_set.csv");
 	      }
 	      return trainingSet;
 	}	
