@@ -1,5 +1,7 @@
 package ml_ex1;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -339,6 +341,19 @@ public class TdidtAlgo {
 		System.out.println(" ======== Tree Printing Began ========");
 		System.out.println(tree);
 		System.out.println(" ======== Tree Printing Ended ========");
+	}
+	
+	public void saveToFile() {
+
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter("output.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.println(tree);
+		
 	}
 
 	public boolean runExample( Node node, Attribute[] row ) {		
