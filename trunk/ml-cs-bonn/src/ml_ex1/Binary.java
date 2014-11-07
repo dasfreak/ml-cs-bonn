@@ -6,7 +6,7 @@ public class Binary extends Attribute<Boolean> {
 	public Binary(){}
 	
 	public void setData(String s) {
-		if (s.equals("yes")){
+		if (s.compareTo("yes") == 0){
 			this.data=true;
 		}
 		else

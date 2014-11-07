@@ -137,6 +137,7 @@ public class TdidtAlgo {
 	 **/
 	void calcTree(Node parentNode, Attribute[][] attributes, double range,
 			String[] columnsLeft) {
+
 		System.out.println("===> [method Entry] ===> calcTree");
 		Node newNode = null;
 		Attribute[][] newAttributes;
@@ -178,9 +179,9 @@ public class TdidtAlgo {
 				}
 
 				System.out.println();
-				Attribute t = new Binary();
-				t.setData(parentSubset.finalResult ? "yes" : "no");
-				parentNode.addChild(new Node(0, t, InputReader.getInstance().getNodesNames()[parentNode.index], parentNode));
+				Binary t = new Binary();
+				t.setData(parentNode.finalResult ? new String("yes") : new String("no"));
+				parentNode.addChild(new Node(parentNode.index, t, InputReader.getInstance().getNodesNames()[parentNode.index], parentNode));
 				continue;
 			}
 
@@ -356,16 +357,51 @@ public class TdidtAlgo {
 		
 	}
 
-	public boolean runExample( Node node, Attribute[] row ) {		
+	public boolean runExample( Node node, Attribute[] row ) {
+		
 		if ( node.getChildren().isEmpty() ) // got to a leaf - recursion is over
 		{
+			if ( row[node.index] instanceof Binary  )
+			{
+				return (boolean) node.attribute.getData();
+			}
 			return node.parent.finalResult;
 		}
-			if ( row[node.index].getData() instanceof Numerical )
+		
+		//System.out.println("Node index = "+node.subsets.get(node.numericalSubset1).attr.getData());
+		
+		if ( node.attribute instanceof Numerical )
 		{
-			
+			double value = (double)row[node.index].getData();
+			double meanValue = (double)node.attribute.getData();
+			if ( value < meanValue )//(double)row[node.index].getData() < (double)( ) )
+			{
+				return runExample( node.getChildren().get(0), row );
+			}
+			else
+			{
+				return runExample( node.getChildren().get(1), row );
+			}
+		}
+		if ( node.attribute instanceof Categorical || node.attribute instanceof Binary )
+		{
+			for ( Subset s : node.subsets )
+			{
+				if ( row[node.index].equals(s.attr.getData() ) )
+				{
+					return runExample( node.getChildren().get(0), row );
+				}
+				else
+				{
+					return runExample( node.getChildren().get(1), row );
+				}
+			}
 		}
 		return false;
-		
+	}
+
+	public Node getRoot() {
+		// TODO Auto-generated method stub
+		return tree.root;
 	}
 }
