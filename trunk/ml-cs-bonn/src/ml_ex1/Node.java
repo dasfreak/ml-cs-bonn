@@ -23,6 +23,7 @@ public class Node {
     public Node parent=null;
     public List<Subset> subsets;
 	//private DisjointSets disjointSets; 
+	private ArrayList<Subset> subsetsResult;
     
 	public ArrayList<Node> getChildren()
 	{
@@ -77,7 +78,7 @@ public class Node {
 		}
 		else if ( attribute instanceof Numerical )
 		{
-			test = FileReader.nodesNames[this.index]+" < " + attribute.getData();
+			test = FileReader.nodesNames[this.index]+" < " + this.subsets.get(this.numericalSubset1).attr.getData();
 		}
 		
 		if ( this.getChildren().isEmpty() )
@@ -160,52 +161,52 @@ public class Node {
 		for ( int i=0; i<attributes.length-1 ; i++ ){
 			// if two following rows differ in target data
 			if((boolean)attributes[i][targetColumn].getData() != (boolean)attributes[i+1][targetColumn].getData() && !attributes[i][index].getData().equals((Double)attributes[i+1][index].getData())){ //so split can be done if numbers are the same				
-					//do the split and calculate the entropy
-					mean = ( (double)attributes[i][index].getData() + (double)attributes[i+1][index].getData() )/2.0;
-					belowMean=new Numerical();
-					aboveMean=new Numerical();
-					
-					if(mean == 0.0){
-						System.out.println("index i: "+i);
+				//do the split and calculate the entropy
+				mean = ( (double)attributes[i][index].getData() + (double)attributes[i+1][index].getData() )/2.0;
+				belowMean=new Numerical();
+				aboveMean=new Numerical();
+				
+				if(mean == 0.0){
+					System.out.println("index i: "+i);
+				}
+				
+				belowMean.setData(mean); //set the attribute for mean
+				below = new Subset(belowMean); //set the flat of isBelow for true
+				below.setCutPlace(i);	//keep index where set was cut
+				below.isBelow=true;
+				
+				aboveMean.setData(mean);	//set the attribute for mean
+				above = new Subset(aboveMean);
+				above.setCutPlace(i);	//keep index where set was cut
+				above.isAbove=true;
+				
+				for ( int j=0; j<attributes.length; j++){
+					//System.out.println("counter: "+j);
+					if ( (double)attributes[j][index].getData() > mean ){
+						above.numOccurrences++;
+						if ((boolean) attributes[j][attributes[0].length-1].getData()) // target column is always boolean
+							above.yesCount++;
+						else
+							above.noCount++;
 					}
-					
-					belowMean.setData(mean); //set the attribute for mean
-					below = new Subset(belowMean); //set the flat of isBelow for true
-					below.setCutPlace(i);	//keep index where set was cut
-					below.isBelow=true;
-					
-					aboveMean.setData(mean);	//set the attribute for mean
-					above = new Subset(aboveMean);
-					above.setCutPlace(i);	//keep index where set was cut
-					above.isAbove=true;
-					
-					for ( int j=0; j<attributes.length; j++){
-						//System.out.println("counter: "+j);
-						if ( (double)attributes[j][index].getData() > mean ){
-							above.numOccurrences++;
-							if ((boolean) attributes[j][attributes[0].length-1].getData()) // target column is always boolean
-								above.yesCount++;
-							else
-								above.noCount++;
-						}
-						else {
-							below.numOccurrences++;
-							if ((boolean) attributes[j][attributes[0].length-1].getData()) // target column is always boolean
-								below.yesCount++;
-							else
-								below.noCount++;
-						}
+					else {
+						below.numOccurrences++;
+						if ((boolean) attributes[j][attributes[0].length-1].getData()) // target column is always boolean
+							below.yesCount++;
+						else
+							below.noCount++;
 					}
-					
-					if(mean == 0.0){
-						System.out.println("above nn: "+above.numOccurrences);
-					}
-					
-					above.entropy = Entropy.calcEntropy( above.yesCount, above.noCount );
-					below.entropy = Entropy.calcEntropy( below.yesCount,  below.noCount );
+				}
+				
+				if(mean == 0.0){
+					System.out.println("above nn: "+above.numOccurrences);
+				}
+				
+				above.entropy = Entropy.calcEntropy( above.yesCount, above.noCount );
+				below.entropy = Entropy.calcEntropy( below.yesCount,  below.noCount );
 //					System.out.println("index: "+i+" numOccurencesBelow = " + below.numOccurrences + " numOccurencesHigher = "+above.numOccurrences + " mean = "+mean);
-					subsets.add(below);
-					subsets.add(above);
+				subsets.add(below);
+				subsets.add(above);
 			}
 		}
 	}
@@ -249,35 +250,30 @@ public class Node {
 			
 			// check what is the information gain for each split and save it in the temporaryInformationGain arraylist
 			double entropySubsets;
-			for ( int j=0; j<subsets.size(); j=j+2 ) { //j=j+2 as on odd index there is entropy for lowerSubset and on even idex there is entropy for upperSubset
-				entropySubsets=subsets.get(j).entropy* ( (double)subsets.get(j).numOccurrences / (double)(range) )+
+			for ( int j=0; j < subsets.size(); j = j+2 ) { //j=j+2 as on odd index there is entropy for lowerSubset and on even idex there is entropy for upperSubset
+				entropySubsets=subsets.get(j).entropy * ( (double)subsets.get(j).numOccurrences / (double)(range) )+
 						subsets.get(j+1).entropy * ( (double)subsets.get(j+1).numOccurrences / (double)(range)); 			
 				temporaryInformationGain.add(entropyParent-entropySubsets);
 			}
-			
 			
 			// find what for each split there is a maximum information gain and ascribe index of numerical subset
 			double maxInformationGain = 0;
 			for (int j=0; j<temporaryInformationGain.size(); j++){
 				if (temporaryInformationGain.get(j) > maxInformationGain){
-					maxInformationGain = temporaryInformationGain.get(j);
+ 					maxInformationGain = temporaryInformationGain.get(j);
 					numericalSubset1=j*2; //as they are in one dimensional arraylist
-					numericalSubset1=j*2+1; //as they are in one dimensional arraylist
+					numericalSubset2=j*2+1; //as they are in one dimensional arraylist
 				}
 			}
-			if (numericalSubset1>0 && numericalSubset2>0){
-				Subset temp1=subsets.get(numericalSubset1);
-				Subset temp2=subsets.get(numericalSubset2);
-				
-				subsets=new ArrayList<Subset>();
-				subsets.add(temp1);
-				subsets.add(temp2);
+			
+			if ( temporaryInformationGain.size() == 0 )
+			{
+				this.informationGain = 0;
+			}
+			else
+			{
 				this.informationGain  = maxInformationGain;  //set information gain
 			}
-			else{
-				this.informationGain=0;
-			}
-			
 		}
 		else{
 			System.err.println("some error");
