@@ -10,7 +10,7 @@ public class TdidtAlgo {
 	private int range;
 	private int yesCount;
 	private int noCount;
-	private int numRecords;
+	private int numRecords; // kept for debug
 
 	public TdidtAlgo() {
 		this.range = DataStructureSingleton.getInstance1().length;
@@ -20,9 +20,9 @@ public class TdidtAlgo {
 		Attribute[][] attributes = DataStructureSingleton.getInstance1();
 		initTree(); // initialize tree
 
-		String[] columns = new String[FileReader.pattern1.length - 1]; // set
+		String[] columns = new String[FileReader.pattern.length - 1]; // set
 		System.arraycopy(FileReader.nodesNames, 0, columns, 0,
-				FileReader.pattern1.length - 1);
+				FileReader.pattern.length - 1);
 		columns[tree.root.index] = null; // done with this column as it is the
 											// root one, it will not be used in
 											// further tree
@@ -62,7 +62,7 @@ public class TdidtAlgo {
 																			// read
 																			// from
 																			// file
-		int trgColumn = FileReader.pattern1.length - 1; // get the last (Target
+		int trgColumn = FileReader.pattern.length - 1; // get the last (Target
 														// column)
 		Node target = new Node(trgColumn,
 				DataStructureSingleton.getPattern1()[trgColumn],
@@ -79,7 +79,7 @@ public class TdidtAlgo {
 
 		// iterate over all attributes to find for which one there is a maxium
 		// information gain
-		for (int i = 0; i < FileReader.pattern1.length - 1; i++) {
+		for (int i = 0; i < FileReader.pattern.length - 1; i++) {
 			Node currentNode = new Node(i,
 					DataStructureSingleton.getPattern1()[i],
 					DataStructureSingleton.getNodeNames()[i], null); // ascribte

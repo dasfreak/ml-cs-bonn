@@ -22,7 +22,6 @@ public class Node {
 	private ArrayList<Node> children;
     public Node parent=null;
     public List<Subset> subsets;
-	//private DisjointSets disjointSets; 
 	private ArrayList<Subset> subsetsResult;
     
 	public ArrayList<Node> getChildren()
