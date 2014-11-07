@@ -14,7 +14,7 @@ public class Tree {
 	{
 		String tree = "";
 		Node parent = root;
-		for ( Node n : root.children )
+		for ( Node n : root.getChildren() )
 		{
 			tree += n.toString() +"\n";
 		}

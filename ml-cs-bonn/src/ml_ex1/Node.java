@@ -19,12 +19,15 @@ public class Node {
 	public int numericalSubset2;
 	
 	
-	public ArrayList<Node> children;
+	private ArrayList<Node> children;
     public Node parent=null;
     public List<Subset> subsets;
 	//private DisjointSets disjointSets; 
     
-	
+	public ArrayList<Node> getChildren()
+	{
+		return children;
+	}
 	//do not know yet if class_name is necessary here, we will see later on
 	public Node(int index, Attribute attribute, String nodeName, Node parent){
 		subsets        = new ArrayList<Subset>();
@@ -34,9 +37,12 @@ public class Node {
 		this.parent    = parent;
 		this.children  = new ArrayList<Node>();
 		nodeNum = nodeCounter;
+	}
+	public void addChild(Node node)
+	{
+		children.add(node);
 		nodeCounter++;
 	}
-	
 	public String toString(){
 		 
 		String str = "";
