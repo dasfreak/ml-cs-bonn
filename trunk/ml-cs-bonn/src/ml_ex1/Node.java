@@ -17,7 +17,7 @@ public class Node {
 	public Attribute attribute; //attribute of the node
 	public int numericalSubset1=0;
 	public int numericalSubset2=0;
-	
+	public boolean finalResult;
 	
 	private ArrayList<Node> children;
     public Node parent=null;
@@ -82,7 +82,8 @@ public class Node {
 		
 		if ( this.getChildren().isEmpty() )
 		{
-			result = " "+( (Boolean)this.attribute.getData() ? "yes" : "no" );
+			
+			result = " "+(this.parent.finalResult ? "yes" : "no" );
 		}
 		
 		for ( Node n : this.children )

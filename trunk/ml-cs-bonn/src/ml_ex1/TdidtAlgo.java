@@ -107,11 +107,13 @@ public class TdidtAlgo {
 			if (parentSubset.entropy==0){
 				System.out.print("\t==> No more branching Result of {"+parentSubset.attr.getData() +"} = ");
 				if(parentSubset.noCount>0){
-					parentSubset.finalResult=false;
+					parentSubset.finalResult = false;
+					parentNode.finalResult   = false;
 					System.out.println(parentSubset.finalResult);
 				}
 				else{
-					parentSubset.finalResult=true;
+					parentSubset.finalResult = true;
+					parentNode.finalResult   = true;
 					System.out.println(parentSubset.finalResult);
 				}
 				
