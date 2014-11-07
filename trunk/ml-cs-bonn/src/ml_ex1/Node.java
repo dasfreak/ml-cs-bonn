@@ -51,11 +51,11 @@ public class Node {
 		String children = "";
 		if ( attribute instanceof Binary )
 		{
-			test = DataStructureSingleton.getInstance1().getNodesNames()[this.index];
+			test = InputReader.getInstance().getNodesNames()[this.index];
 		}
 		else if ( attribute instanceof Categorical )
 		{
-			test = DataStructureSingleton.getInstance1().getNodesNames()[this.index] +" in {";
+			test = InputReader.getInstance().getNodesNames()[this.index] +" in {";
 			this.subsets.sort( new Comparator<Subset>() {
 
 				public int compare(Subset o1, Subset o2) {
@@ -77,7 +77,7 @@ public class Node {
 		}
 		else if ( attribute instanceof Numerical )
 		{
-			test = DataStructureSingleton.getInstance1().getNodesNames()[this.index]+" < " + this.subsets.get(this.numericalSubset1).attr.getData();
+			test = InputReader.getInstance().getNodesNames()[this.index]+" < " + this.subsets.get(this.numericalSubset1).attr.getData();
 		}
 		
 		if ( this.getChildren().isEmpty() )
