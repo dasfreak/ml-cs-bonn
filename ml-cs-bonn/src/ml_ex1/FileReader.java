@@ -17,14 +17,27 @@ public class FileReader {
 	 * @file_name - name of the file to read from
 	 */
 	
-	public static Attribute[] pattern;
-	public static String[] nodesNames;
-	public int cols_number;
-
-	public static Attribute[][] loadDatasetFromFile1(String file_name) {
+	private Attribute[] pattern;
+	private String[] nodesNames;
+	private int columnsCount;
+	private Attribute[][] data;
+	public Attribute[] getPattern(){
+		return pattern;
+	}
+	public String[] getNodesNames(){
+		return nodesNames;
+	}
+	public int getColumnsCount(){
+		return columnsCount;
+	}
+	public Attribute[][] getData() {
+		return data;
+	}
+	public FileReader(String fileName){
+		loadDatasetFromFile1(fileName);
+	}
+	public void loadDatasetFromFile1(String file_name) {
 		File file = new File(file_name);
-
-		Attribute[][] process_data1;
 		//declare reader
 		BufferedReader reader = null;
 		try {
@@ -57,9 +70,9 @@ public class FileReader {
 			e.printStackTrace();
 		}
 		
-		process_data1=new Attribute[rows_number][line_splitted.length]; // array of attributes
-		pattern=new Attribute[line_splitted.length]; // pattern array which keeps attribute for each column
-		nodesNames=new String[line_splitted.length];
+		data       = new Attribute[rows_number][line_splitted.length]; // array of attributes
+		pattern    = new Attribute[line_splitted.length]; // pattern array which keeps attribute for each column
+		nodesNames = new String[line_splitted.length];
 		
 		//iterate over all the elements of first line
 		for (int i=0; i<line_splitted.length; i++){ 
@@ -116,8 +129,8 @@ public class FileReader {
 				line_read=line.split(","); //split into columns
 				//iterate over each element in certain row
 				for (int i=0; i<line_read.length; i++){ 
-					process_data1[line_counter][i]=pattern[i].getClass().getDeclaredConstructor().newInstance();
-					process_data1[line_counter][i].setData(line_read[i]);
+					data[line_counter][i]=pattern[i].getClass().getDeclaredConstructor().newInstance();
+					data[line_counter][i].setData(line_read[i]);
 				}	
 				line_counter++;
 			}
@@ -134,7 +147,6 @@ public class FileReader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return process_data1;
 	}
 	
 	/*function which prints data in array*/
@@ -147,4 +159,5 @@ public class FileReader {
 			System.out.print("\n");
 		}
 	}
+
 }
