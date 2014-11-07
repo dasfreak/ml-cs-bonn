@@ -88,7 +88,7 @@ public class TdidtAlgo {
 		
 		for (Subset parentSubset : parentNode.subsets){ //iterate over all subsets for parent node and check which node should be inserted after that
 			double highestInformationGain=0.0;
-			Node nodeHighestEntropy=null;
+			Node nodeHighestInformationGain=null;
 			for (int j=0; j<columns.length ;j++){ //for each attribute which was not used until now
 				if ( null == columns[j] )
 				{
@@ -100,24 +100,34 @@ public class TdidtAlgo {
 				
 				// check which node we should add so that information gain in reference to parent subset is the highest
 				if ( newNode.informationGain > highestInformationGain ){ //check if old one is greater than new one (looking for maximum entropy)
-					nodeHighestEntropy = newNode; //if greater save node with maximum entropy to nodeHighestEntropy
+					nodeHighestInformationGain = newNode; //if greater save node with maximum entropy to nodeHighestEntropy
 					highestInformationGain = newNode.informationGain;
 				}
 			}
 			
 			// if we arrived here that means that we check what node should be added for certain subset and now we add it
-			parentNode.children.add(nodeHighestEntropy);
-			System.out.println("For node with index: "+parentNode.index+"  For the subset: "+parentSubset.attr.getData()+"	, the following node was ascribed "+ nodeHighestEntropy.index);
+			if ( nodeHighestInformationGain == null )
+			{
+				continue;
+			}
+			parentNode.children.add(nodeHighestInformationGain);
+
+//			if ( nodeHighestEntropy == null )
+//			{
+//				System.out.println(" hey ");
+//			}
+//			System.out.println(nodeHighestEntropy.index);
+//			System.out.println("For node with index: "+parentNode.index+"  For the subset: "+parentSubset.attr.getData()+"	, the following node was ascribed "+ nodeHighestEntropy.index);
 			
 			// ?????????????????
-			columns[nodeHighestEntropy.index] = null; // done with this column
+			columns[nodeHighestInformationGain.index] = null; // done with this column
 			// ?????????????????
 			
 			
 			newAttributes = getSubsetOfTable( attributes, parentNode.index, parentSubset );
 			
 			//execute recursively
-			buildWholeTree(nodeHighestEntropy, newAttributes , entropy, newAttributes.length ); 
+			buildWholeTree(nodeHighestInformationGain, newAttributes, nodeHighestInformationGain.entropy, newAttributes.length ); 
 		}
 	}
 
