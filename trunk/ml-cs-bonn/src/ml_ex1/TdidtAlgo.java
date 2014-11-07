@@ -88,8 +88,8 @@ public class TdidtAlgo {
 		
 		for (Subset parentSubset : parentNode.subsets){ //iterate over all subsets for parent node and check which node should be inserted after that
 			double highestInformationGain=0.0;
-			Node nodeHighestInformationGain=null;
-			for (int j=0; j<columns.length ;j++){ //for each attribute which was not used until now
+			Node nodeHighestInformationGain = null;
+			for (int j=0; j<columns.length; j++){ //for each attribute which was not used until now
 				if ( null == columns[j] )
 				{
 					continue;
@@ -123,7 +123,6 @@ public class TdidtAlgo {
 			columns[nodeHighestInformationGain.index] = null; // done with this column
 			// ?????????????????
 			
-			
 			newAttributes = getSubsetOfTable( attributes, parentNode.index, parentSubset );
 			
 			//execute recursively
@@ -136,7 +135,8 @@ public class TdidtAlgo {
 	/** gets the smaller table for certain subset **/
 	private Attribute[][] getSubsetOfTable( Attribute[][] grandSetAttributes, int index, Subset subset) {
 		
-		Attribute[][] subArray = new Attribute[subset.numOccurrences][grandSetAttributes[0].length];
+//		Attribute[][] subArray = new Attribute[subset.numOccurrences][grandSetAttributes[0].length];
+		ArrayList<Attribute[]> subArray = new ArrayList<Attribute[]>();
 		
 		System.out.println("number of occurencies fo subset: "+subset.numOccurrences);
 		int j = 0;
@@ -148,8 +148,7 @@ public class TdidtAlgo {
 				//System.out.println(grandSetAttributes[i][index].getData());
 				if ( subset.attr.getData().equals(grandSetAttributes[i][index].getData() ) )
 				{
-					System.arraycopy(grandSetAttributes[i], 0, subArray[j], 0, grandSetAttributes[0].length);
-					j++;
+					subArray.add(grandSetAttributes[i].clone());
 				}
 			}
 		}
@@ -161,15 +160,13 @@ public class TdidtAlgo {
 					//System.out.println("value from arrtributes"+(Double)grandSetAttributes[i][index].getData());
 					if ( (double)grandSetAttributes[i][index].getData() > (double)subset.attr.getData() )
 					{
-						System.arraycopy(grandSetAttributes[i], 0, subArray[j], 0, grandSetAttributes[0].length);
-						j++;
+						subArray.add(grandSetAttributes[i].clone());
 					}
 				}
 				else if (subset.isBelow==true){
 					if ( (double)grandSetAttributes[i][index].getData() <= (double)subset.attr.getData() )
 					{
-						System.arraycopy(grandSetAttributes[i], 0, subArray[j], 0, grandSetAttributes[0].length);
-						j++;
+						subArray.add(grandSetAttributes[i].clone());
 					}
 				}
 				else{
@@ -180,14 +177,23 @@ public class TdidtAlgo {
 		//printing subArray for check
 		System.out.println();
 		System.out.println("Array after narrowing on index: "+index);
-		for (int it=0; it<subArray.length; it++){
-			for (int jt=0; jt<subArray[0].length; jt++){
-				System.out.print( subArray[it][jt].getData()+" , ");
+		
+		Attribute[][] subArrayConv = new Attribute[subArray.size()][grandSetAttributes[0].length];
+		
+		int l = 0;
+		for ( Attribute[] arr: subArray )
+		{
+			subArrayConv[l++] = arr;
+		}
+		
+		for (int it=0; it<subArrayConv.length; it++){
+			for (int jt=0; jt<subArrayConv[0].length; jt++){
+				System.out.print( subArrayConv[it][jt].getData()+" , ");
 			}
 			System.out.println();
 		}
 		
-		return subArray;
+		return subArrayConv;
 	}
 
 	public void printTree() {
