@@ -7,6 +7,7 @@ public class Tree {
 	public Tree(Node root)
 	{
 		this.root = root;
+		Node.nodeCounter++;
 	}
 	
 	
@@ -14,13 +15,9 @@ public class Tree {
 	{
 		String tree = "";
 		Node parent = root;
-		for ( Node n : root.getChildren() )
-		{
-			tree += n.toString() +"\n";
-		}
+		tree += root.toString();
 		return tree;
 	}
 	
-
 }
 
