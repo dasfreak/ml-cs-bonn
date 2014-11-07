@@ -13,16 +13,16 @@ public class TdidtAlgo {
 	private int numRecords; // kept for debug
 
 	public TdidtAlgo() {
-		this.range = DataStructureSingleton.getInstance1().length;
-		calculateTargetEntropy(DataStructureSingleton.getInstance1());
+		this.range = DataStructureSingleton.getInstance1().getData().length;
+		calculateTargetEntropy(DataStructureSingleton.getInstance1().getData());
 
 		// set the root node
-		Attribute[][] attributes = DataStructureSingleton.getInstance1();
+		Attribute[][] attributes = DataStructureSingleton.getInstance1().getData();
 		initTree(); // initialize tree
 
-		String[] columns = new String[FileReader.pattern.length - 1]; // set
-		System.arraycopy(FileReader.nodesNames, 0, columns, 0,
-				FileReader.pattern.length - 1);
+		String[] columns = new String[DataStructureSingleton.getInstance1().getPattern().length - 1]; // set
+		System.arraycopy(DataStructureSingleton.getInstance1().getNodesNames(), 0, columns, 0,
+				DataStructureSingleton.getInstance1().getPattern().length - 1);
 		columns[tree.root.index] = null; // done with this column as it is the
 											// root one, it will not be used in
 											// further tree
@@ -56,17 +56,17 @@ public class TdidtAlgo {
 	/** Initialize tree, select parent node and place it in the root **/
 	public void initTree() {
 
-		Attribute[][] attributes = DataStructureSingleton.getInstance1(); // get
+		Attribute[][] attributes = DataStructureSingleton.getInstance1().getData(); // get
 																			// the
 																			// array
 																			// read
 																			// from
 																			// file
-		int trgColumn = FileReader.pattern.length - 1; // get the last (Target
+		int trgColumn = DataStructureSingleton.getInstance1().getPattern().length - 1; // get the last (Target
 														// column)
 		Node target = new Node(trgColumn,
-				DataStructureSingleton.getPattern1()[trgColumn],
-				DataStructureSingleton.getNodeNames()[trgColumn], null);
+				DataStructureSingleton.getInstance1().getPattern()[trgColumn],
+				DataStructureSingleton.getInstance1().getNodesNames()[trgColumn], null);
 		target.entropy = calculateTargetEntropy(attributes); // calculate
 																// entropy of
 																// the target
@@ -79,10 +79,10 @@ public class TdidtAlgo {
 
 		// iterate over all attributes to find for which one there is a maxium
 		// information gain
-		for (int i = 0; i < FileReader.pattern.length - 1; i++) {
+		for (int i = 0; i < DataStructureSingleton.getInstance1().getPattern().length - 1; i++) {
 			Node currentNode = new Node(i,
-					DataStructureSingleton.getPattern1()[i],
-					DataStructureSingleton.getNodeNames()[i], null); // ascribte
+					DataStructureSingleton.getInstance1().getPattern()[i],
+					DataStructureSingleton.getInstance1().getNodesNames()[i], null); // ascribte
 																		// subsequent
 																		// node
 																		// to
@@ -95,7 +95,7 @@ public class TdidtAlgo {
 					attributes.length); // calculate information gain for
 										// temporary node
 			System.out.println("Information_Gain{"
-					+ FileReader.nodesNames[currentNode.index] + "} = "
+					+ DataStructureSingleton.getInstance1().getNodesNames()[currentNode.index] + "} = "
 					+ currentNode.informationGain);
 			if (currentNode.informationGain > highestInformationGain) { // check
 																		// if
@@ -124,7 +124,7 @@ public class TdidtAlgo {
 													// final root node
 
 		System.out.println("==> Highest Information_Gain{"
-				+ FileReader.nodesNames[nodeHighestEntropy.index] + "} = "
+				+ DataStructureSingleton.getInstance1().getNodesNames()[nodeHighestEntropy.index] + "} = "
 				+ nodeHighestEntropy.informationGain);
 
 	}
@@ -149,7 +149,7 @@ public class TdidtAlgo {
 															// that
 			// narrow down the values in array according for selected subset
 			System.out.println("Filtering on: {"
-					+ FileReader.nodesNames[parentNode.index] + "->"
+					+ DataStructureSingleton.getInstance1().getNodesNames()[parentNode.index] + "->"
 					+ parentSubset.attr.getData() + "}");
 
 			newAttributes = getSubsetOfTable(attributes, parentNode.index,
@@ -178,8 +178,7 @@ public class TdidtAlgo {
 				System.out.println();
 				Attribute t = new Binary();
 				t.setData(parentSubset.finalResult ? "yes" : "no");
-				parentNode.addChild(new Node(0, t, DataStructureSingleton
-						.getNodeNames()[parentNode.index], parentNode));
+				parentNode.addChild(new Node(0, t, DataStructureSingleton.getInstance1().getNodesNames()[parentNode.index], parentNode));
 				continue;
 			}
 
@@ -192,8 +191,8 @@ public class TdidtAlgo {
 					continue;
 				}
 
-				newNode = new Node(j, DataStructureSingleton.getPattern1()[j],
-						DataStructureSingleton.getNodeNames()[j], parentNode); // create
+				newNode = new Node(j, DataStructureSingleton.getInstance1().getPattern()[j],
+						DataStructureSingleton.getInstance1().getNodesNames()[j], parentNode); // create
 																				// new
 																				// node
 																				// if
@@ -209,8 +208,8 @@ public class TdidtAlgo {
 																		// information
 																		// gain
 				System.out.println("Information_Gain for going on branch: {"
-						+ FileReader.nodesNames[parentNode.index] + "->"
-						+ FileReader.nodesNames[newNode.index] + "}\t= "
+						+ DataStructureSingleton.getInstance1().getNodesNames()[parentNode.index] + "->"
+						+ DataStructureSingleton.getInstance1().getNodesNames()[newNode.index] + "}\t= "
 						+ newNode.informationGain);
 				// System.out.println("particular information gain is: "+newNode.informationGain);
 				// System.out.println("range passed to gain is: "+newAttributes.length);
@@ -247,9 +246,9 @@ public class TdidtAlgo {
 			} else {
 				System.out
 						.println("==> Highest Information_Gain is going on branch: {"
-								+ FileReader.nodesNames[parentNode.index]
+								+ DataStructureSingleton.getInstance1().getNodesNames()[parentNode.index]
 								+ "->"
-								+ FileReader.nodesNames[nodeHighestInformationGain.index]
+								+ DataStructureSingleton.getInstance1().getNodesNames()[nodeHighestInformationGain.index]
 								+ "}\t= "
 								+ nodeHighestInformationGain.informationGain);
 			}
