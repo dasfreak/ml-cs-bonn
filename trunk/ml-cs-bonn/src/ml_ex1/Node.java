@@ -17,6 +17,10 @@ public class Node {
 	public Attribute attribute; //attribute of the node
 	public int numericalSubset1=0;
 	public int numericalSubset2=0;
+	
+	public Subset numericalSubsetMax1;
+	public Subset numericalSubsetMax2;
+	
 	public boolean finalResult;
 	
 	private ArrayList<Node> children;
@@ -268,6 +272,7 @@ public class Node {
 				}
 			}
 			
+			
 			if ( temporaryInformationGain.size() == 0 )
 			{
 				this.informationGain = 0;
@@ -275,6 +280,13 @@ public class Node {
 			else
 			{
 				this.informationGain  = maxInformationGain;  //set information gain
+				System.out.println("num sub 1 "+numericalSubset1);
+				numericalSubsetMax1=subsets.get(numericalSubset1);
+				numericalSubsetMax1=subsets.get(numericalSubset2);
+				
+				this.subsets=new ArrayList<Subset>();
+				this.subsets.add(numericalSubsetMax1);
+				this.subsets.add(numericalSubsetMax2);
 			}
 		}
 		else{

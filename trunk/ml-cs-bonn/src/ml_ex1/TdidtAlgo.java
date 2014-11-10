@@ -135,14 +135,15 @@ public class TdidtAlgo {
 	 * build the whole tree, for the first call the data are (tree.root ,
 	 * attributes , targetEntropy, range)
 	 **/
-	void calcTree(Node parentNode, Attribute[][] attributes, double range,
-			String[] columnsLeft) {
+	void calcTree(Node parentNode, Attribute[][] attributes, double range, String[] columnsLeft) {
 
 		System.out.println("===> [method Entry] ===> calcTree");
 		Node newNode = null;
 		Attribute[][] newAttributes;
 		String[] newColumnsLeft = new String[columnsLeft.length];
 
+		System.out.println("parent subset: "+parentNode.subsets.size());
+		
 		for (Subset parentSubset : parentNode.subsets) { // iterate over all
 															// subsets for
 															// parent node and
@@ -151,14 +152,22 @@ public class TdidtAlgo {
 															// inserted after
 															// that
 			// narrow down the values in array according for selected subset
-			System.out.println("Filtering on: {"
-					+ InputReader.getInstance().getNodesNames()[parentNode.index] + "->"
-					+ parentSubset.attr.getData() + "}");
-
-			newAttributes = getSubsetOfTable(attributes, parentNode.index,
-					parentSubset);
-			System.arraycopy(columnsLeft, 0, newColumnsLeft, 0,
-					columnsLeft.length);
+			
+			
+			System.out.println(parentNode.subsets.size());
+			//here there is an error, paretnSubset is null ???
+			System.out.println("haha "+parentSubset.attr.getData());
+			if (parentSubset==null){
+				System.out.println("here"); //error because parent susbet it null- why ???
+			}
+			if (parentSubset.entropy!=0){
+				System.out.println("Filtering on: {"
+						+ InputReader.getInstance().getNodesNames()[parentNode.index] + "->"
+						+ parentSubset.attr.getData() + "}");
+			}
+			
+			newAttributes = getSubsetOfTable(attributes, parentNode.index, parentSubset);
+			System.arraycopy(columnsLeft, 0, newColumnsLeft, 0, columnsLeft.length);
 
 			double highestInformationGain = 0.0;
 			Node nodeHighestInformationGain = null;
@@ -245,7 +254,7 @@ public class TdidtAlgo {
 			// added for certain subset and now we add it
 			if (nodeHighestInformationGain == null) {
 				System.out.println("nodeHighest is null ");
-				continue;
+				return;
 			} else {
 				System.out
 						.println("==> Highest Information_Gain is going on branch: {"
@@ -262,9 +271,8 @@ public class TdidtAlgo {
 																		// this
 																		// column
 
-			// execute recursively
-			calcTree(nodeHighestInformationGain, newAttributes,
-					newAttributes.length, newColumnsLeft);
+			// execute recursively		
+			calcTree(nodeHighestInformationGain, newAttributes, newAttributes.length, newColumnsLeft);
 		}
 	}
 
