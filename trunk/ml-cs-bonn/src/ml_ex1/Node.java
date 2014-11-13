@@ -272,22 +272,32 @@ public class Node {
 				}
 			}
 			
-			
-			if ( temporaryInformationGain.size() == 0 )
-			{
-				this.informationGain = 0;
+			if (numericalSubset1>0 && numericalSubset2>0){		
+				Subset temp1=subsets.get(numericalSubset1);		
+				Subset temp2=subsets.get(numericalSubset2);
+				subsets=new ArrayList<Subset>();
+				subsets.add(temp1);
+				subsets.add(temp2);
 			}
-			else
-			{
-				this.informationGain  = maxInformationGain;  //set information gain
-				System.out.println("num sub 1 "+numericalSubset1);
-				numericalSubsetMax1=subsets.get(numericalSubset1);
-				numericalSubsetMax1=subsets.get(numericalSubset2);
+			else{		
+				this.informationGain=0;		
+			}
 				
-				this.subsets=new ArrayList<Subset>();
-				this.subsets.add(numericalSubsetMax1);
-				this.subsets.add(numericalSubsetMax2);
-			}
+//			if ( temporaryInformationGain.size() == 0 )
+//			{
+//				this.informationGain = 0;
+//			}
+//			else
+//			{
+//				this.informationGain  = maxInformationGain;  //set information gain
+//				System.out.println("num sub 1 "+numericalSubset1);
+//				numericalSubsetMax1=subsets.get(numericalSubset1);
+//				numericalSubsetMax1=subsets.get(numericalSubset2);
+//				
+//				this.subsets=new ArrayList<Subset>();
+//				this.subsets.add(numericalSubsetMax1);
+//				this.subsets.add(numericalSubsetMax2);
+//			}
 		}
 		else{
 			System.err.println("some error");
