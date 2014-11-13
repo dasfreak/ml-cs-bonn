@@ -17,7 +17,7 @@ public class InputReader {
 
 //	    	 trainingSet = new FileReader("data_exercise_1.csv");
 
-	    	 trainingSet = new FileReader("training_set.csv");
+	    	 trainingSet = new FileReader("ex2.csv");
 //	    	 trainingSet = new FileReader("lecture_example.csv");
 
 
@@ -27,7 +27,7 @@ public class InputReader {
 	
 	public static FileReader getTestSet() {
 	      if( testSet == null) {
-	    	  testSet = new FileReader ("test_set.csv");
+	    	  testSet = new FileReader ("ex2.csv");
 	      }
 	      return testSet;
 	}

@@ -296,8 +296,7 @@ public class TdidtAlgo {
 			for (int i = 0; i < grandSetAttributes.length; i++) {
 				// System.out.println(subset.attr.getData());
 				// System.out.println(grandSetAttributes[i][index].getData());
-				if (subset.attr.getData().equals(
-						grandSetAttributes[i][index].getData())) {
+				if (subset.attr.getData().equals( grandSetAttributes[i][index].getData())) {
 					subArray.add(grandSetAttributes[i].clone());
 				}
 			}

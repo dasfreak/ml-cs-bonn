@@ -252,6 +252,13 @@ public class Node {
 		}
 		else if (this.attribute instanceof Numerical) {	//FOR NUMERICAL
 			
+			for (int r=0; r<attributes.length; r++){
+				for (int c=0; c<attributes[0].length; c++){
+					System.out.print(attributes[r][c].getData()+",");
+				}
+				System.out.println();
+			}
+			
 			List<Double> temporaryInformationGain = new ArrayList<Double>();
 			
 			// check what is the information gain for each split and save it in the temporaryInformationGain arraylist
@@ -272,12 +279,14 @@ public class Node {
 				}
 			}
 			
+			
 			if (numericalSubset1>=0 && numericalSubset2>=0){		
 				Subset temp1=subsets.get(numericalSubset1);		
 				Subset temp2=subsets.get(numericalSubset2);
 				subsets=new ArrayList<Subset>();
 				subsets.add(temp1);
 				subsets.add(temp2);
+				this.informationGain=maxInformationGain;
 			}
 			else{		
 				this.informationGain=0;		
