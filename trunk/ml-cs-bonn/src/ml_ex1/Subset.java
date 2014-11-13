@@ -12,6 +12,8 @@ public class Subset {
 	private int      cutPlace;
 	public boolean   finalResult;
 	
+	boolean isNotBestSubset=false;
+	
 	
 	public Subset(Attribute attr){
 		this.attr       = attr;
