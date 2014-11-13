@@ -286,7 +286,7 @@ public class TdidtAlgo {
 		// System.out.println("number of occurencies fo subset: "+subset.numOccurrences);
 		int j = 0;
 
-		if (subset.attr instanceof Categorical || subset.attr instanceof Binary) { // create
+		if (subset.attr instanceof Binary) { // create
 																					// array
 																					// for
 																					// categorical
@@ -300,6 +300,20 @@ public class TdidtAlgo {
 					subArray.add(grandSetAttributes[i].clone());
 				}
 			}
+		}
+		else if(subset.attr instanceof Categorical){
+			for (int i = 0; i < grandSetAttributes.length; i++) {
+				// System.out.println(subset.attr.getData());
+				// System.out.println(grandSetAttributes[i][index].getData());
+				if (subset.attr.getData().equals( grandSetAttributes[i][index].getData()) && subset.isNotBestSubset==false) {
+					subArray.add(grandSetAttributes[i].clone());
+				}
+				else if (subset.isNotBestSubset==true){
+					subArray.add(grandSetAttributes[i].clone());
+				}
+			}
+			
+			
 		} else { // create array for numerical comparison
 			for (int i = 0; i < grandSetAttributes.length; i++) {
 				if (subset.isAbove == true) {

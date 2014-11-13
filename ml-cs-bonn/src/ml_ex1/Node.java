@@ -17,6 +17,7 @@ public class Node {
 	public Attribute attribute; //attribute of the node
 	public int numericalSubset1=-1;
 	public int numericalSubset2=-1;
+	public int maxCategoricalSubset=-1;
 	
 	public Subset numericalSubsetMax1;
 	public Subset numericalSubsetMax2;
@@ -236,7 +237,7 @@ public class Node {
 	
 	
 	public void calculateInformationGain(Attribute[][] attributes, double entropyParent, int range) {	
-		if (this.attribute instanceof Categorical || this.attribute instanceof Binary ){ //FOR CATEGORICAL AND BINARY
+		if (this.attribute instanceof Binary ){ //FOR CATEGORICAL AND BINARY
 			
 			//calculate information gain by summing the entropy of each subset and ubstracting it from parent entropy
 			double entropySubsets = 0;
@@ -250,6 +251,56 @@ public class Node {
 			//System.out.println(entropySubsets);
 			this.informationGain = entropyParent - entropySubsets;	
 		}
+		else if(this.attribute instanceof Categorical){	
+				double entropySubsets = 0;
+				
+				//calc entropy for each subset
+				List<Subset> tempRemainingSubsetGain=new ArrayList<Subset>();
+				List<Double> temporaryInformationGain = new ArrayList<Double>();
+				for ( int j=0; j < subsets.size(); j++ ) {
+					Attribute attrRest=new Categorical();
+					attrRest.setData("not"+subsets.get(j).attr.getData());
+					tempRemainingSubsetGain.add(new Subset(attrRest));
+					tempRemainingSubsetGain.get(j).isNotBestSubset=true;
+					
+					entropySubsets=subsets.get(j).entropy * ( (double)subsets.get(j).numOccurrences / (double)(range) );
+					
+					for ( int it=0; it <subsets.size(); it++){
+						if (it!=j){
+							tempRemainingSubsetGain.get(j).numOccurrences+=subsets.get(it).numOccurrences;
+							tempRemainingSubsetGain.get(j).yesCount+=subsets.get(it).yesCount;
+							tempRemainingSubsetGain.get(j).noCount+=subsets.get(it).noCount;
+						}
+					}
+					
+					tempRemainingSubsetGain.get(j).entropy = Entropy.calcEntropy( tempRemainingSubsetGain.get(j).yesCount, tempRemainingSubsetGain.get(j).noCount );
+					entropySubsets += tempRemainingSubsetGain.get(j).entropy* ( (double)tempRemainingSubsetGain.get(j).numOccurrences / (double)(range) );
+					
+					temporaryInformationGain.add(entropyParent-entropySubsets);
+				}
+				
+				//extract the highest and use it further
+				double maxInformationGain = 0;
+				for (int j=0; j<temporaryInformationGain.size(); j++){
+					if (temporaryInformationGain.get(j) > maxInformationGain){
+	 					maxInformationGain = temporaryInformationGain.get(j);
+						maxCategoricalSubset=j; //as they are in one dimensional arraylist
+					}
+				}
+				
+				if (maxCategoricalSubset>=0){		
+					Subset temp1=subsets.get(maxCategoricalSubset);		
+					Subset temp2=tempRemainingSubsetGain.get(maxCategoricalSubset);
+					subsets=new ArrayList<Subset>();
+					subsets.add(temp1);
+					subsets.add(temp2);
+					this.informationGain=maxInformationGain;
+				}
+				else{		
+					this.informationGain=0;		
+				}
+		}
+		
 		else if (this.attribute instanceof Numerical) {	//FOR NUMERICAL
 			
 			for (int r=0; r<attributes.length; r++){
@@ -291,22 +342,6 @@ public class Node {
 			else{		
 				this.informationGain=0;		
 			}
-				
-//			if ( temporaryInformationGain.size() == 0 )
-//			{
-//				this.informationGain = 0;
-//			}
-//			else
-//			{
-//				this.informationGain  = maxInformationGain;  //set information gain
-//				System.out.println("num sub 1 "+numericalSubset1);
-//				numericalSubsetMax1=subsets.get(numericalSubset1);
-//				numericalSubsetMax1=subsets.get(numericalSubset2);
-//				
-//				this.subsets=new ArrayList<Subset>();
-//				this.subsets.add(numericalSubsetMax1);
-//				this.subsets.add(numericalSubsetMax2);
-//			}
 		}
 		else{
 			System.err.println("some error");
