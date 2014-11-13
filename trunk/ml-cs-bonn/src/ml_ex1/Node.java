@@ -15,8 +15,8 @@ public class Node {
 	public int numRecords;
 	public double informationGain;
 	public Attribute attribute; //attribute of the node
-	public int numericalSubset1=0;
-	public int numericalSubset2=0;
+	public int numericalSubset1=-1;
+	public int numericalSubset2=-1;
 	
 	public Subset numericalSubsetMax1;
 	public Subset numericalSubsetMax2;
@@ -272,7 +272,7 @@ public class Node {
 				}
 			}
 			
-			if (numericalSubset1>0 && numericalSubset2>0){		
+			if (numericalSubset1>=0 && numericalSubset2>=0){		
 				Subset temp1=subsets.get(numericalSubset1);		
 				Subset temp2=subsets.get(numericalSubset2);
 				subsets=new ArrayList<Subset>();
