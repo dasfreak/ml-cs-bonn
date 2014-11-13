@@ -203,8 +203,7 @@ public class TdidtAlgo {
 					continue;
 				}
 
-				newNode = new Node(j, InputReader.getInstance().getPattern()[j],
-						InputReader.getInstance().getNodesNames()[j], parentNode); // create
+				newNode = new Node(j, InputReader.getInstance().getPattern()[j], InputReader.getInstance().getNodesNames()[j], parentNode); // create
 																				// new
 																				// node
 																				// if
